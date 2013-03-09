@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование DOS INT22 реальный режим ассемблер" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания DOS: INT 22" />
+</head>
+<body>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=ints.htm>Прерывания DOS</a> - <b>INT 22h: Адрес завершения.</b><br />
+	<h2>INT 22h: Адрес завершения.</h2>
+    Адрес в этом векторе (0000:0088) представляет собой место, куда будет передано управление, когда текущая программа завершится по одной из следующих функций: <br />
+    <a href=int20.htm>INT 20h</a> (традиционный выход в DOS) <br />
+    Функция DOS 00h <br />
+    Функция DOS 4Ch (EXIT)<br /> 
+    <a href=int27.htm>INT 27h</a> (TSR: завершиться, но остаться резидентным) <br />
+    Функция DOS 31h (KEEP) <br /><br />
+    DOS принимает во внимание этот вектор при снятии через <a href=int24.htm>INT 24h (критич.ошибка)</a>. Адрес в этом векторе копируется в поле PSP Terminate Address функциями DOS 26h (создать PSP) и 4Bh (EXEC). <br /><br />
+    <font color=red><b>Не вызывайте INT 22h<b></font>
+</body>
+</html>

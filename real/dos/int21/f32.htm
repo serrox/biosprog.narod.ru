@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=32h, AX=3200h, диск" />
+	<meta name="description" content="Int 21h fn 32h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 32h: Дать дисковую информацию DOS.</b><br />
+	<h2>Функция 32h: Дать дисковую информацию DOS.</h2>
+	<b>Вход:</b><br />
+	AH=32h<br /><br />
+	DL = Номер диска (0 - текущий, 1 - A:, ...)
+	<b>Выход:</b><br />
+	AL == 0 успех, AL == ffh диск не найден<br />
+	DS:BX - Данные о диске(DPB)<br /><br />
+	<b>Примечание:</b><br />
+	Для DOS 2.0 и выше.<br />
+	Значение регистра DS может измениться<br />
+	Структура DPB:<br />
+	<table border=1>
+		<tr><td>Байты</td><td>Смысл</td></tr>
+		<tr><td>0</td><td>Номер диска (0 - А:, 1 - В:, ...)</td></tr>
+		<tr><td>1</td><td>Номер устройства</td></tr>
+		<tr><td>2-3</td><td>Байт в секторе</td></tr>
+		<tr><td>4</td><td>Секторов в кластере (0=1, 1=2 ...)</td></tr>
+		<tr><td>5</td><td>Сдвиг для секторов в кластеры</td></tr>
+		<tr><td>6-7</td><td>Количество зарезервированнх секторов в начале диска</td></tr>
+		<tr><td>8</td><td>Количество таблиц FAT</td></tr>
+		<tr><td>9-10</td><td>Количество директорий</td></tr>
+		<tr><td>11-12</td><td>Номер первого сектора данных</td></tr>
+		<tr><td>13-14</td><td>наибольший номер кластера (в FAT 16 - FF6h)</td></tr>
+		<tr><td colspan=2><font color=red>Dos 1.0 - 4.0</font><br /><table border=1>
+			<tr><td>15</td><td>Количество секторов на таблицу FAT</td></tr>
+			<tr><td>16-17</td><td>Первый сектор корневого каталога</td></tr>
+			<tr><td>18-21</td><td>Адрес заголовка устройства</td></tr>
+			<tr><td>22</td><td>Байт Media ID</td></tr>
+			<tr><td>23</td><td>==0 если к диску обращалися, ==FFh если нет</td></tr>
+			<tr><td>24-27</td><td>Указатель к следующей DPB</td></tr>
+			<tr><td colspan=2><font color=red>Dos 2.x</font></td></tr>
+			<tr><td>28-29</td><td>Первый секктор текушего каталога (==0 если корневая директория, ==ffffh если непонятный каталог)</td></tr>
+			<tr><td>30-93</td><td>ASCIZ полный путь текущей директории</td></td></tr>
+			<tr><td colspan=2><font color=red>Dos 3.x</font></td></tr>
+			<tr><td>28-29</td><td>Кластер, с которого надо начинать поиск пустого места</td></tr>
+			<tr><td>30-31</td><td>Количесво пустых кластеров. (==ffffh - неизвестно)</td></tr>
+			</table></td></tr>
+		<tr><td colspan=2><font color=red>Dos 4.0+</font></td></tr>
+		<tr><td>15-16</td><td>Количество секторов на таблицу FAT</td></tr>
+		<tr><td>17-18</td><td>Первый сектор корневого каталога</td></tr>
+		<tr><td>19-22</td><td>Адрес заголовка устройства</td></tr>
+		<tr><td>23</td><td>Байт Media ID</td></tr>
+		<tr><td>24</td><td>==0 если к диску обращалися, ==FFh если нет</td></tr>
+		<tr><td>25-28</td><td>Указатель к следующей DPB</td></tr>
+		<tr><td>29-30</td><td>Кластер, с которого надо начинать поиск пустого места</td></tr>
+		<tr><td>31-32</td><td>Количесво пустых кластеров. (==ffffh - неизвестно)</td></tr>
+	</table><br />
+	Байт MediaID может принимать следующие значения:<br />
+	FFh - двухсторонняя дискета, 8 секторов на дорожку (320 Кб)<br />
+	FEh - односторонняя дискета, 8 секторов на дорожку (160 Кб)<br />
+	FDh - двухсторонняя дискета, 9 секторов на дорожку (360 Кб)<br />
+	FCh - односторонняя дискета, 9 секторов на дорожку (180 Кб)<br />
+	FAh - ROM диск, 16 секторов на дорожку<br />
+	F9h - двухсторонняя дискета, 15 секторов на дорожку (1,2 Мб) или 9 секторов на дорожку (720 Кб)<br />
+	F8h - Жёсткий диск<br />
+	F0h - иные устройства (в том числе двухсторонняя дискета, 18 секторов на дорожку (1,44 Мб))<br />
+	Стоит заметить, что это значение соответствует байту "тип носителя" в заголовке файловой системы FAT. На флешках, отформатированных в этой файловой системы указывается значение F8h<br /><br />
+	Заголовок устройства имеет следующий вид:<br />
+	<table border=1>
+		<tr><td>Байты</td><td>Смысл</td></tr>
+		<tr><td>0-3</td><td>Указатель к следующену заголовку устройства (==ffffh если последний заголовок в списке)</td></tr>
+		<tr><td>4-5</td><td>Аттрибуты устройства</td></tr>
+		<tr><td>6-7</td><td>Адрес вызова драйвера</td></tr>
+		<tr><td>8-9</td><td>Адрес обработчика прерывания</td></tr>
+		<tr><td colspan=2><font color=red>Знаковые устройства</font></td></tr>
+		<tr><td>10-17</td><td>Имя устройства</td></tr>
+		<tr><td colspan=2><font color=red>Блочные устройства</font></td></tr>
+		<tr><td>10</td><td>Количество поддрайверов поддерживаемых драйвером</td></tr>
+		<tr><td>11-17</td><td>Обычно не используется, но вот примеры, когда используется:<br />
+			"$PCMATA"   драйвер PCMATA.SYS (PCMCIA)<br />
+			"AHADDVR"   Драйвер ASPIDISK.SYS (Adaptec SCSI)<br />
+			"DBLSPAC"   MS DoubleSpace или DriveSpace<br />
+			"DSKREET"   NortonUtils v5+ Diskreet<br />
+			"GFS	"   драйвер DD.BIN (LapLink III)<br />
+			"SIDExxx"   драйвер ATADRV.EXE (PCMCIA)<br />
+			"STAC-CD"   Stacker/Stacker Anywhere</td></tr>
+		<tr><td colspan=2><font color=red>Для CD-Rom</font></td></tr>
+		<tr><td>18-19</td><td>=0000</td></tr>
+		<tr><td>20</td><td>Имя диска (00 - неизвестно, 01 - A:, 02 - B: ...)</td></tr>
+		<tr><td>21</td><td>Количество юнитов</td></tr>
+		<tr><td>22-25</td><td>ASCI строка "MSCD"</td></tr>
+		<tr><td>26-27</td><td>Версия записанная в ASCI</td></tr>
+		<tr><td colspan=2><font color=red>Для MS DoubleSpace или DriveSpace</font></td></tr>
+		<tr><td>18-19</td><td>ASCI строка ",."</td></tr>
+		<tr><td>20-??</td><td>Адрес точки входа API</td></tr>
+	</table><br />
+	Аттрибуты блочного устройства:<br />
+	<table border=1>
+		<tr><td>Биты</td><td>Смысл</td></tr>
+		<tr><td>15</td><td>=0</td></tr>
+		<tr><td>14</td><td>Поддержка IOCLT</td></tr>
+		<tr><td>13</td><td>Не-IBM формат</td></tr>
+		<tr><td>12</td><td>Он-лайн устройство</td></tr>
+		<tr><td>11</td><td>Поддержка OPEN/CLOSE/RemMedia вызовов<br />
+						   <FONT COLOR=RED>DOS 3.0+</FONT></td></tr>
+		<tr><td>10</td><td>Зарезервированно</td></tr>
+		<tr><td>9</td><td>Разрешён прямой доступ<br />
+						  <font color=red>Dos 3.3+, драйвер Driver.sys</font></td></tr>
+		<tr><td>8</td><td>Используется Driver.sys<br />
+						  <font color=red>Dos 3.3+</font></td></tr>
+		<tr><td>7</td><td>Поддержка запроса наличия IOCLT<br />
+						  <font color=red>Dos 5.0+</font></td></tr>
+		<tr><td>6</td><td>Поддержка обобщённых функций IOCLT<br />
+						  <font color=red>Dos 3.2+</font></td></tr>
+		<tr><td>5-2</td><td>Зарезервированно</td></tr>
+		<tr><td>1</td><td>Драйвер поддерживает 32-х битную адресацию<br />
+						  <font color=red>Dos 3.31+</font></td></tr>
+		<tr><td>0</td><td>Зарезервированно</td></tr>
+	</table><br />
+	Аттрибуты символьного устройства:<br />
+	<table border=1>
+		<tr><td>Биты</td><td>Смысл</td></tr>
+		<tr><td>15</td><td>=1</td></tr>
+		<tr><td>14</td><td>Поддержка IOCLT</td></tr>
+		<tr><td>13</td><td>Поддержка вывода до занятости<br />
+						   <FONT COLOR=RED>DOS 3.0+</FONT></td></tr>
+		<tr><td>12</td><td>Резерв</td></tr>
+		<tr><td>11</td><td>Поддержка OPEN/CLOSE/RemMedia вызовов<br />
+						   <FONT COLOR=RED>DOS 3.0+</FONT></td></tr>
+		<tr><td>10-8</td><td>Версия:<br />
+							 000 - DOS 3.0 или 3.1<br />
+							 001 - DOS 3.2<br />
+							 010 - Европейский DOS 4.0<br />
+							 <font color=red>Не всегда устонавливается корректно. требует установленного бита 11</font></td></tr>
+		<tr><td>7</td><td>Поддержка запроса наличия IOCLT<br />
+						  <font color=red>Dos 5.0+</font></td></tr>
+		<tr><td>6</td><td>Поддержка обобщённых функций IOCLT<br />
+						  <font color=red>Dos 3.2+</font></td></tr>
+		<tr><td>5</td><td>Зарезервированно</td></tr>
+		<tr><td>4</td><td>Специальное устройство</td></tr>
+		<tr><td>3</td><td>Это CLOCK$</td></tr>
+		<tr><td>2</td><td>Это NUL</td></tr>
+		<tr><td>1</td><td>Это стандартный выход</td></tr>
+		<tr><td>0</td><td>Это стандартный вход</td></tr>
+	</table>
+</body>
+</html>

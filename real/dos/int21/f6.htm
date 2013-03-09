@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=06h, AX=0600h, консоль" />
+	<meta name="description" content="Int 21h fn 06h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 6h: Нефильтрующий консольный ввод-вывод.</b><br />
+	<h2>Функция 6h: Нефильтрующий консольный ввод-вывод.</h2>
+	Вход:<br />
+	AH=06h<br /><br />
+	DL = символ (от 0 до 0feH), посылаемый на стандартный вывод <br />
+	&nbsp;&nbsp;&nbsp;= 0ffH запрос ввода со стандартного ввода<br /><br />
+	<b>Примечание:</b><br />
+	при DL = 0ffH выполняет ввод с консоли "без ожидания", возвращая взведенный флаг нуля (ZF), если на консоли нет готового символа. если символ готов, сбрасывает флаг ZF (NZ) и возвращает считанный символ в AL. <br />
+	 Не проверяет Ctrl-Break. вызывайте дважды для расширенного ASCII.
+</body>
+</html>

@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=34h, AX=3400h, реентерабельность" />
+	<meta name="description" content="Int 21h fn 34h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 34h: Адрес статуса реентерабельности DOS.</b><br />
+	<h2>Функция 34h: Адрес статуса реентерабельности DOS.</h2>
+	Вход:<br />
+	AH=34h<br /><br />
+	<b>Выход:</b><br />
+	ES:BX = Флаг реентабельности<br /><br />
+	<b>Примечание:</b><br />
+	Если флаг не равен нулю, то резидентной программе не реккомендуется использовать функции DOS (особенно с номером ниже 0ch)<br />
+	<font color=red>Не документированно</font>
+</body>
+</html>

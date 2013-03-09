@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=07h, AX=0700h, консоль" />
+	<meta name="description" content="Int 21h fn 07h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 07h: Нефильтрующий консольный ввод без эха</b><br />
+	<h2>Функция 07h: Нефильтрующий консольный ввод без эха</h2>
+	Вход:<br />
+	AH=07h<br />
+	Выход:<br />
+	AL = символ, полученный через стандартный ввод<br /><br />
+	<b>Примечание:</b><br />
+	Считывает (ожидает) символ со стандартного входного устройства и возвращает этот символ в AL. Не фильтрует: Не проверяет на Ctrl-Break, backspace и т.п.<br />
+	вызывайте дважды для ввода расширенного символа ASCII.<br />
+	используйте <a href=fb.htm>функцию 0bH</a> для проверки статуса (если не хотите ожидать нажатия клавиши).
+</body>
+</html>

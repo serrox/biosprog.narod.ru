@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование BIOS INT15 реальный режим ассемблер 16bit конфигурация" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 15" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../int.htm>Прерывания Bios</a> - <a href=../int15.htm>INT 15h: Дополнительные функции.</a> - <b>Таблица конфигурации. Данные, зависимые от производителя.</b><br />
+	<h2>Таблица конфигурации. Данные, зависимые от производителя.</h2><br />
+	<b><h4>AWARD B</b><span lang="en-us">ios</span></h4>Начиная со смещения 0Ah идёт текст лецинзионного соглашения<br /><br />
+	<b><h4>Phoenix Bios</h4></b>
+	<table border=1 width=100%>
+	<tr><td>
+	Смещение</td><td>размер</td><td>Описание</td></tr><tr><td valign=top>
+	0Ah</td><td>1 байт</td><td>=0</td></tr><tr><td valign=top>
+	0Bh</td><td>1 байт</td><td>Старшая часть версии</td></tr><tr><td valign=top>
+	0Ch</td><td>1 байт</td><td>Младшая часть версии</td></tr><tr><td valign=top>
+	0Dh</td><td>4 байта</td><td>ASCIZ строка "PTL"</td></tr>
+	</table><br />
+	<b><h4>Quadram Quad386</h4></b>
+	Начиная со смещения 0Ah идёт ASCIZ строка "Quadram Quad386XT"<br /><br />
+	<b><h4>Quadram Quad386</h4></b>
+	<table border=1 width=100%>
+	<tr><td>
+	Смещение</td><td>размер</td><td>Описание</td></tr><tr><td valign=top>
+	0Ah</td><td>7 байт</td><td>ASCI строка "TOSHIBA"</td></tr><tr><td valign=top>
+	11h</td><td>1 байт</td><td>смысл не известен</td></tr><tr><td valign=top>
+	12h</td><td>1 байт</td><td>смысл не известен</td></tr><tr><td valign=top>
+	13h</td><td>3 байта</td><td>ASCI строка. смысл не известен.</td></tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=30h, AX=3000h, версия" />
+	<meta name="description" content="Int 21h fn 30h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 30h: Дать номер версии DOS.</b><br />
+	<h2>Функция 30h: Дать номер версии DOS.</h2>
+	<b>Вход:<b><br />
+	AH=30h<br /><br />
+	<b>Выход:</b><br />
+	AL = старший номер версии<br />
+	AH = младший номер версии<br />
+	BX,CX = 0000H (DOS 3.0+)<br /><br />
+	<b>Примечание:<b><br />
+	Для DOS 2.0 и выше. Для более ранних вресий в AL возвращается 0.<br />
+	DOS 2.x может изменить значение регистров BX и CX2
+</body>
+</html>

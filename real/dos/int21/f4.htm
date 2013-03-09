@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=04h, AX=0400h, AUX, COM, COM1" />
+	<meta name="description" content="Int 21h fn 04h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 04h: Послать байт в COM1(AUX)</b><br />
+	<h2>Функция 04h: Послать байт в COM1(AUX)</h2>
+	Вход:<br />
+	AH=04h<br /><br />
+	DL - посылаемый байт.<br /><br />
+	<b>Примечание:</b><br />
+	При этом COM(AUX)-порт при запуске системы инициализируется со следующими параметрами<br />
+	<ul><li>Скорость: 2400бод</li>
+	<li>Без проверки на чётность</li>
+	<li>1 стоп-бит</li>
+	<li>8-ми битовые слова</li><ul><br />
+	(если иное не указано с помощью команды DOS MODE)
+</body>
+</html>

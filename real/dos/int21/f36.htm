@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name"keywords" content="программирование, DOS, int 21h, прерывание, AH=36h, AX=3600h, диск, свободное место" />
+	<meta name="description" content="Int 21h fn 36h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 36h: Дать свободную память диска.</b><br />
+	<h2>Функция 36h: Дать свободную память диска.</h2>
+	Вход:<br />
+	AH=36h<br />
+	DL - номер диска (00 - A:\; 01 - B:\; 02 - C:\; ...)<br /><br />
+	Выход:<br />
+	Если AX = FFFFh - неверный номер диска, иначе:<br />
+	AX - число секторов в одном кластере<br />
+	BX - число свободных кластеров на диске<br />
+	CX - размер сектора (в байтах)<br />
+	DX - общее число кластеров на диске
+</body>
+</html>

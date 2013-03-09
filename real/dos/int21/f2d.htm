@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=2Dh, AX=2D00h, время" />
+	<meta name="description" content="Int 21h fn 2Dh" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 2Dh: Установить время DOS.</b><br />
+	<h2>Функция 2Dh: Установить время DOS.</h2>
+	<b>Вход:<b><br />
+	AH=2Dh<br />
+	СH = часы<br />
+	CL = минуты
+	DH = секунду<br />
+	DL = сотые доли секунды<br /><br />
+	<b>Выход:<b><br />
+	AL == 0 - успех
+</body>
+</html>

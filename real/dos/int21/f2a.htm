@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH2Ah, AX=2A00h, дата" />
+	<meta name="description" content="Int 21h fn 2Ah" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 2Ah: Дать дату DOS.</b><br />
+	<h2>Функция 2Ah: Дать дату DOS.</h2>
+	<b>Вход:<b><br />
+	AH=2Ah<br /><br />
+	<b>Выход:<b><br />
+	AL = День недели (0 -воскресенье, 1 - понедельник, 2 - вторник ...)<br />
+	СХ = год (считая с 1980-го)<br />
+	DH = месяц<br />
+	DL = день<br /><br />
+	<b>Примечание:</b><br />
+	Может работать не правильно в DOS 2.x
+</body>
+</html>

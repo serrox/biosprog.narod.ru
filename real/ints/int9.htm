@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование BIOS INT INT9 реальный режим ассемблер 16bit IRQ1 клавиатура" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 09" />
+</head>
+<body>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 09h: прерывание от клавиатуры.</b><br />
+	<p align=centr><h2>INT 09h: прерывание от клавиатуры.</h2></p>
+		Это аппаратно генерируемое прерывание (IRQ 1) выполняется при каждом нажатии и отпускании клавиши. Код ROM-BIOS интерпретирует это, сохраняя значения в буфере клавиатуры по адресу 0:041e. Он также обрабатывает специальные случаи клавиш PrtSc и SysReq, и отслеживает состояние клавиш Shift и различных Lock. <br /><br />
+		Резидентные popup-программы, которые обычно предусматривают "кнопку вызова", перехватывают INT 09h и проверяют на определенный ключ примерно так: <br /><br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;push&nbsp;&nbsp;&nbsp;ax<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;al,60h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;читать ключ<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;cmp&nbsp;&nbsp;&nbsp;al,POP_KEY&nbsp;&nbsp;&nbsp;;это кнопка вызова?<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;je&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do_pop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; да, активизировать popup<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;  нет, уйти на исходный обработчик<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;pop&nbsp;&nbsp;&nbsp;ax<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;jmp&nbsp;&nbsp;&nbsp;cs:[int9_vect]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;переход на первоначальный обработчик<br />
+		|do_pop:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;------ следующий код необходим для отработки аппаратного прерывания<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;al,61h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;взять значениe порта управления клавиатурой<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;mov&nbsp;&nbsp;&nbsp;ah,al&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; сохранить его<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;al,80h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;установить бит разрешения для клавиатуры<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;out&nbsp;&nbsp;&nbsp;&nbsp;61h,al&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; и вывести его в управляющий порт<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;xchg&nbsp;&nbsp;ah,al&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;извлечь исходное значение порта<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;out&nbsp;&nbsp;&nbsp;61h,al&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;и записать его обратно<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;mov&nbsp;&nbsp;al,20h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;послать сигнал "конец прерывания"<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;out&nbsp;&nbsp;&nbsp;&nbsp;20h,al&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; контроллеру прерываний 8259<br />
+		|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;------ дальше - прочие проверки, и наконец - активизация popup<br />
+</body>
+</html>

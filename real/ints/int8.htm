@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование BIOS INT INT8 реальный режим ассемблер 16bit таймер IRQ0" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 08" />
+</head>
+<body>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 08h: прерывание от таймера</b><br />
+	<h2>INT 08h: прерывание от таймера</h2>
+		Это аппаратно генерируемое прерывание (IRQ 0) вызывается по каждому тику часов реального времени PC. Часы тикают каждые 55мс, или около 18.2 раз в секунду. Код ROM-BIOS для этого прерывания обновляет значение часов на 0:046 сек. этот код также выключает двигатели гибких дисков по истечении примерно двух секунд без операций ввода/вывода.<br /><br />
+		Если вы хотите использовать это прерывание для обработки событий, зависящих от времени, вы должны предусмотреть код, сообщающий системе, когда прерывание закончено. Магическая последовательность такова: <br /><br />
+		|&nbsp;&nbsp;mov al,20h &nbsp;&nbsp;&nbsp;;послать сигнал конец-прерывания<br />
+		|&nbsp;&nbsp;out 20h,al&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; контроллеру прерываний 8259<br /><br />
+		большинство программ используют для этого ROM-BIOS. например, вначале программа пользователя сохраняет вектор ROM-BIOS в переменной с именем cs:[saved_int8]. затем по каждому прерыванию INT 08H выполняется следующий код: <br /><br />
+		|&nbsp;&nbsp;pushf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;имитировать INT<br />
+		|&nbsp;&nbsp;call  dword ptr cs:[saved_int8]&nbsp;;выполнить нормальную обработку<br />
+		|&nbsp;&nbsp;cmp   cs:my_var,test_value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;теперь сделать свои черные дела<br />
+		|&nbsp;... и т.д. ...<br />
+		|&nbsp;&nbsp;iret&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;возврат в прерванную прикладную программу "переднего плана"<br />
+</body>
+</html>

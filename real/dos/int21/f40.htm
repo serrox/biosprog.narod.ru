@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=40h, AX=4000h, записать в файл" />
+	<meta name="description" content="Int 21h fn 40h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 40h: Писать в файл.</b><br />
+	<h2>Функция 40h: Писать в файл.</h2>
+	Вход:<br />
+	AH = 40h<br />
+	BX = описатель файла.<br />
+	DS:DX = адрес буфера с информацией для записи.<br />
+	CX - Число записываемых байт<br />
+	Выход:<br />
+	если CF установлен AX = код ошибки иначе, AX = число реально записанных байт.<br />
+</body>
+</html>

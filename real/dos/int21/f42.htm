@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=42h, AX=4200h, указатель в файле" />
+	<meta name="description" content="Int 21h fn 42h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 42h: Установить указатель файла.</b><br />
+	<h2>Функция 42h: Установить указатель файла.</h2>
+	Вход:<br />
+	AH = 42h<br />
+	AL = 0 - от начала файла, 1 - от текущей позиции, 2 - от конца файла<br />
+	BX = описатель файла<br />
+	CX:DX = (в байтах) смещение в файле (начиная с нуля, CX - старшая часть)<br /><br />
+	Выход:<br />
+	Если CF установлен AX = код ошибки, иначе - DX:AX = новая позиция в файле.<br />
+</body>
+</html>

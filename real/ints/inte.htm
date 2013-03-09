@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование BIOS INT INTE реальный режим ассемблер 16bit дискета IRQ6" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 0E" />
+</head>
+<body>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 0Eh: прерывание от дискеты </b><br />
+	<h2>INT 0Eh: прерывание от дискеты </h2>
+		INT 0Eh - это аппаратно генерируемое прерывание (IRQ 6), вызываемое контроллером флоппи-дисков. <br /><br />
+		Код ROM-BIOS взводит бит 7 в переменной BIOS "seek_status" (0:043E), указывая, что запущена операция поиска на дискете. прерывание <a href=int13.htm>13h</a> использует этот флаг, чтобы определить, не требуется ли рекалибрация контроллера перед следующей операцией.<br />
+</body>
+</html>

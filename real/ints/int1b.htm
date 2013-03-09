@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование BIOS INT INT1B реальный режим ассемблер 16bit клавиатура" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 1B" />
+</head>
+<body>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 1Bh: Прерывание с клавиатуры.</b><br />
+	<h2>INT 1Bh: Прерывание с клавиатуры.</h2>
+	Этот вектор (0:006C) берется, когда BIOS распознает нажатие клавиши Ctrl-Break. INT 1Bh первоначально указывает на IRET, но DOS устанавливает его на локальную программу, которая взводит внутренний флаг DOS. DOS время от времени проверяет этот флаг и действует в соответствии с действующим режимом обработки прерываний.
+</body>
+</html>

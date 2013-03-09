@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=5Ah, AX=5A00h, временный файл" />
+	<meta name="description" content="Int 21h fn 5Ah" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 5Ah: Создать уникальный временный файл.</b><br />
+	<h2>Функция 5Ah: Создать уникальный временный файл.</h2>
+	Вход:<br />
+	AH=5Ah<br />
+	DS:DX = путь к папке, в которой будет размещён файл. должен оканчиваться на "\" и 13 нулевых байт<br />
+	Выход:<br />
+	если CF установлен AX = код ошибки, иначе AX описатель и DS:DX - полный путь к файлу.<br />
+</body>
+</html>

@@ -1,0 +1,6 @@
+!BIOS int15h
++DOS int21h
++DOS int 33h
+#BIOS int10
+#BIOS int11
+#BIOS int13

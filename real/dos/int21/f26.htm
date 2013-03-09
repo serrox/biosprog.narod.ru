@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=26h, AX=2600h, PSP" />
+	<meta name="description" content="Int 21h fn 26h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 26h: Создать префикс программного сегмента.</b><br />
+	<h2>Функция 26h: Создать префикс программного сегмента.</h2>
+	Вход:<br />
+	AH=26h<br />
+	DX = адрес сегмента (параграфа) для нового PSP (префикс программного сегмента)<br />
+	CS = сегмент PSP, используемого как шаблон для нового PSP
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование DOS INT24 реальный режим ассемблер критические ошибки" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания DOS: INT 24" />
+</head>
+<body>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=ints.htm>Прерывания DOS</a> - <b>INT 24h: Адрес обработчика критических ошибок.</b><br />
+	<h2>INT 24h: Адрес обработчика критических ошибок.</h2>
+    Этот вектор (0000:0090) хранит адрес, по которому передается управление, когда драйвер устройства DOS обнаруживает критическую ошибку. адрес по этому вектору копируется в PSP функицями 26h (создать PSP) и 4Bh (EXEC). При выходе родительские значения восстанавливаются в векторе INT 24h из родительского PSP. <br />
+    Нормальный обработчик INT 24h - это код, который выдает сообщение: <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&quot;Abort, Retry, Ignore?&quot;<br />
+    которое вы видите при неготовности дискеты или принтера. <br /><br />
+    Наиболее сложные программы предоставляют собственный обработчик критических ошибок. <br /><br />
+    Вход: <br />
+    BP:SI => заголовок устройства , позволяющий определить сбойное устройство <br />
+    DI = биты 0-7 содержат код ошибки (биты 8-15 не определены) <br />
+    AL = если в AH бит 7=0, то в AL номер диска (0=A, 1=B, и т.д.) <br />
+    AH = информация об ошибке: <br />
+    <table border=1 width=100%><tr><td>Биты</td><td>Значение</td></tr>
+    <tr><td>0</td><td>тип операции:<br />
+    0 - чтение<br />
+    1 - запись</td></tr>
+    <tr><td>1 и 2</td><td>задействаванная область диска:<br />
+    00 - системные файлы<br />
+    01 - таблица FAT<br />
+    10 - оглавление<br />
+    11 - область данных<br /></td></tr>
+    <tr><td>3</td><td>FAIL-выход разрешён<br />
+    <font color=red><b>только DOS3.x</b></font></td></tr>
+    <tr><td>4</td><td>RETRY-выход разрешён<br />
+    <font color=red><b>только DOS3.x</b></font></td></tr>
+    <tr><td>5</td><td>IGNORE-выход разрешён<br />
+    <font color=red><b>только DOS3.x</b></font></td></tr>
+    <tr><td>6</td><td>зарезерировано, равно 0</td></tr>
+    <tr><td>7</td><td>тип устройства:<br />
+    0 - диск<br />
+    1 - иные устройства<br /></td></tr></table>
+    Вы можете обработать ошибку, запросив действие пользователя (например, подготовить дискету или включить принтер). функции DOS выше 0cH не следует использовать (исключая функцию 59H , которая работает нормально). Вы можете получить дополнительную информацию через функцию 59H и/или через блок заголовка устройства, адресуемый через BP:SI. <br /><br />
+    Выход <br />
+    После обработки ошибки вы можете загрузить в регистр AL код действия и вернуться в DOS, указав одно из следующих действий: <br />
+    <table border=1 width=100%><tr><td>AL</td><td>смысл</td></tr>
+    <tr><td>0</td><td>игнорироавть ошибку</td></tr>
+    <tr><td>1</td><td>повторить операцию</td></tr>
+    <tr><td>2</td><td>завершить через адрес <a href=int23.htm>23h</a> (как при Ctrl-Break)</td></tr>
+    <tr><td>3</td><td>вернуться в приложение, индицируя сбившуюся функцию DOS<br />
+    <font color=red><b>Только для DOS3.0 или выше</b></font></td></tr></table>
+    DOS 3.x проверьте AH при входе, чтобы определить допустимые действия. Опция AL=3 кажется идеальной. например, если операция "открыть файл" вызвала ошибку из-за отсутствия диска в устройстве, вы можете предоставить вашему приложению самому обработать эту ситуацию. Однако эта опция имеет недостатки: <br />
+    <font color=red>DOS всегда возвращает код ошибки 53h, который не очень информативен</font><br /><br />
+    Стек <br />
+    При входе в обработчик INT 24H, стек имеет состояние, описанное ниже: <br />
+    IP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- адрес для возврата в DOS через IRET <br />
+    CS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- адрес для возврата в DOS через IRET <br />
+    Flags <br />
+    AX,BX,CX,DX,SI,DI,BP,DS,ES - регистры прикладной программы перед <a href=int21.htm>INT 21h</a><br />
+    IP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- адрес для возврата непосредственно в приложение <br />
+    CS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- адрес для возврата непосредственно в приложение <br />
+    Flags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- регистр флагов приложения <br /><br />
+    Эту информацию можно использовать, чтобы определить сбившуюся функцию (через AH в стеке) и любые параметры (через другие регистры). Но более существенно то, что ваш обработчик INT 24H может восстановить регистры и осуществить возврат непосредственно в прикладную программу. <br />
+    Обычно ваш обработчик будет имитировать DOS, загружая AX кодом ошибки DOS и взводя флаг CF, чтобы индицировать ошибку (хорошие программы так и поступают). Когда вы возвращаетесь в приложение таким способом, то, как утверждается в документации, DOS будет в "неустойчивом" состоянии до тех пор, пока не будет вызвана функция с номером старше 0cH. Тем не менее, такая техника успешно используется многими программами. <br />
+    <font color=red>Вектор INT 24h ИГНОРИРУЕТСЯ для дисковых ошибок, встречающихся при <a href=int25.26.htm>INT 25h/26h</a></font>
+</body>
+</html>

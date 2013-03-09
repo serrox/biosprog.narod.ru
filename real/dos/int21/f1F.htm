@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=1Fh, AX=1F00h, параметры диска" />
+	<meta name="description" content="Int 21h fn 1Fh" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 1Fh: Получить параметры диска для стандартного диска.</b><br />
+	<h2>Функция 1Fh: Получить параметры диска для стандартного диска.</h2>
+	Вход:<br />
+	AH=1Fh<br /><br />
+	Выход:<br />
+	AL ==0 - успешно, == ffh - ошибка<br />
+	DS:BX = Блок параметров диска (DPB)<br /><br />
+	Примечание:<br />
+	Эта функция может некорректно работать для DOS версии ниже 5.0<br />
+	В DOS 1.x байты 0, 18 и 19 структуры DBP устанавливаются не правильно<br />
+	Структура DPB:<br />
+	<table width=100% border=1>
+		<tr><td>Байты</td><td>Смысл</td></tr>
+		<tr><td>0</td><td>ID диска</td></tr>
+		<tr><td>1</td><td>Буква диска (== 0 - А: , == 1 - В: и т.д)</td></tr>
+		<tr><td>2-3</td><td>Байт на сектор</td></tr>
+		<tr><td>4</td><td>Секторов в кластере</td></tr>
+		<tr><td>6-7</td><td>Начальный сектор первой таблицы FAT</td></tr>
+		<tr><td>8</td><td>Количество копий таблицы FAT</td></tr>
+		<tr><td>9-10</td><td>Количество директорий</td></tr>
+		<tr><td>11-12</td><td>Номер первого сектора даннных</td></tr>
+		<tr><td>13-14</td><td>Наибольший номер кластера</td></tr>
+		<tr><td>15</td><td>Секторов на таблицу FAT</td></tr>
+		<tr><td>16-17</td><td>Начальный сектор директории</td></tr>
+		<tr><td>18-19</td><td>Адрес таблицы распределения</td></tr>
+	</table>
+</body>
+</html>

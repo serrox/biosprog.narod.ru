@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH=56h, AX=5600h, переместить файл, переименовать файл" />
+	<meta name="description" content="Int 21h fn 56h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 56h: Переименовать/переместить файл.</b><br />
+	<h2>Функция 56h: Переименовать/переместить файл.</h2>
+	Вход:<br />
+	AH = 56h<br />
+	DS:DX = путь к файлу в формате ASCIIZ<br />
+	ES:DI = новый путь к файлу в формате ASCIIZ<br />
+	CL - маска аттрубута<br />
+	Выход:<br />
+	если CF установлен AX = код ошибки<br /><br />
+	<b>Примечание:</b>
+	перемещение производится в пределах одного диска.
+</body>
+</html>

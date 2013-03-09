@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование BIOS INT INT14 реальный режим ассемблер 16bit COM COM-порт" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 14" />
+</head>
+<body>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 14h: Ввод/вывод через COM порт.</b><br />
+	<h2>INT 14h: Ввод/вывод через COM порт.</h2>
+	<table width=100% border=1><tr><td>AH</td><td>Описание функции</td></tr><tr><td valign=top>
+	<a name=0>0</a></td><td>инициализировать порт<br /><br />
+	вход: DX = номер порта (0-1)<br />
+	AL = битовые флаги параметра инициализации:<br />
+	&nbsp;&nbsp;биты 0 и 1 : длинна слова<br />
+	&nbsp;&nbsp;бит 2 : стоп-бит 0=1 бит 1=2 бита<br />
+	&nbsp;&nbsp;биты 3 и 4 : чётность (00, 01, 11 - нечёт; 10 чёт)<br />
+	&nbsp;&nbsp;биты 7-5 : скорость (БОД) :<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;000 - 110 ( с FOSSIL - 19200)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;001 - 150 ( с FOSSIL - 38400)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;010 - 300<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;011 - 600<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;100 - 1200<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;101 - 2400<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;110 - 4800<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;111 - 9600<br /><br />
+	выход:АН = состояние порта <br />
+	&nbsp;&nbsp;бит 7: тайм-аут<br />
+	&nbsp;&nbsp;бит 6: буфер вывода пуст (без FOSSIL: регистр сдвига передатчика пуст)<br />
+	&nbsp;&nbsp;бит 5: в буфере вывода есть место (без FOSSIL: регистр хранения передатчика пуст)<br />
+	&nbsp;&nbsp;бит 4: обнаружено состояние BREAK<br />
+	&nbsp;&nbsp;бит 3: ошибка синхронизации<br />
+	&nbsp;&nbsp;бит 2: ошибка четности<br />
+	&nbsp;&nbsp;бит 1: ошибка переполнения — данные потеряны<br />
+	&nbsp;&nbsp;бит 0: в буфере ввода есть данные <br />
+	AL = состояние модема <br />
+	&nbsp;&nbsp;бит 7: обнаружена несущая (состояние линии DCD)<br />
+	&nbsp;&nbsp;бит 6: обнаружен звонок (состояние линии RI)<br />
+	&nbsp;&nbsp;бит 5: запрос для передачи (состояние линии DSR)<br />
+	&nbsp;&nbsp;бит 4: сброс для передачи (состояние линии CTS)<br />
+	&nbsp;&nbsp;бит 3: линия DCD изменила состояние<br />
+	&nbsp;&nbsp;бит 2: линия RI изменила состояние<br />
+	&nbsp;&nbsp;бит 1: линия DSR изменила состояние<br />
+	&nbsp;&nbsp;бит 0: линия CTS изменила состояние</td></tr><tr><td valign=top>
+	1</td><td>записать символ в порт<br />
+	Вход: AL - код символа, вероятно в ASCII<br />
+	DX = номер порта (0-1)<br />
+	Выход: AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
+	2</td><td>Читать символ (с ожиданием символа)
+	Вход : DX = номер порта (0-1)<br />
+	Выход : AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)<br />
+	 AL - код символа, вероятно в ASCII</td></tr><tr><td valign=top>
+	3</td><td>Получить текущее состояние порта<br />
+	Вход : DX = номер порта (0-1)<br />
+	Выход : AL = состояние модема (см. функцию <a href=int14.htm#0>0</a>)<br />
+	AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
+	4</td><td>Инициализация FOSSIL-драйвера<br />
+	Вход : DX = номер порта (com1=0 Com2=1 Com3=2 Com4=3)<br />
+	Выход : АХ = 1954h (вероятно иначе - ошибка)<br />
+	BL = максимальный поддерживаемый номер функции<br />
+	ВН = версия спецификации FOSSIL</td></tr><tr><td valign=top>
+	5</td><td>Деинициализация FOSSIL-драйвера<br />
+	Вход : DX = номер порта (com1=0 Com2=1 Com3=2 Com4=3)</td></tr></table>
+</body>
+</html>

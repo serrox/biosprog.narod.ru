@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Низкоуровневое програмирование</title>
+	<meta name="keywords" content="программирование, DOS, int 21h, прерывание, AH09h, AX=0900h, вывод строки />
+	<meta name="description" content="Int 21h fn 09h" />
+</head>
+<body>
+	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 09h: Выдать строку на дисплей</b><br />
+	<h2>Функция 09h: Выдать строку на дисплей</h2>
+	Вход:<br />
+	AH=09h<br />
+	DS:DX = адрес строки, заканчивающейся символом '$' (ASCII - 24H)<br />
+	Выход:<br />
+	AL = 24h<br /><br />
+	<b>Примечание:</b><br />
+	строка, исключая завершающий ее символ '$', посылается на стандартный вывод. символы Backspace обрабатываются как в <a href=f2.htm>функции 02H</a>. обычно, чтобы перейти на новую строку, включают в текст пару CR/LF (ASCII 0dH и ASCII 0aH).
+</body>
+</html>
