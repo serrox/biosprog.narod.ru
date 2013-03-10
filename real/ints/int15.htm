@@ -81,7 +81,7 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;dw 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;пустое (резервное) слово<br/>
 	&nbsp;&nbsp;&nbsp;&nbsp;db 16 dup (0) 16 пустых байтов<br/>
 	замечание: прерывания запрещаются в процессе перемещения данных, так что, если вы запускаете пачку конкурирующих процессов асинхронной передачи, избегайте перемещения больших объемов данных.</td></tr><tr><td valign=top>
-	88h</td><td>размер extended-памяти.<br/>
+	<a name=88>88h</a></td><td>размер extended-памяти.<br/>
 	<font color=red><b>Только AT-совместимые компьютеры(не более 15 иб)</b></font><br/>
 	выход: AX = число непрерывных 1K блоков сверх 1M (1024K)</td></tr><tr><td valign=top>
 	89h</td><td>Войти в режим Protected (286 Virtual memory). это полезная штука, если вы не знаете, что это за зверь - Protected Mode i286.<br/>
@@ -321,7 +321,7 @@
 	DL - Третий считанный байт
 	</td></tr></table>
 	</td></tr><tr><td valign=top>
-	e8h</td><td>Память
+	<a name=e8>e8h</a></td><td>Память
 	<table width=100% border=1><tr><td>AL</td><td>функция</td></tr><tr><td valign=top>
 	10h</td><td>размер extended-памяти.<br/>
 	Выход: <br/>
