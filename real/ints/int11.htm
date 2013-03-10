@@ -12,15 +12,25 @@
 		Выдаёт информацию об оборудовании системы<br />
 		Вход: EAX=0<br />
 		Выход:AX - байт конфигурации системы<br/>
-		&nbsp;&nbsp;&nbsp;бит 0 - загрузились с FDD<br/>
+		&nbsp;&nbsp;&nbsp;бит 0 - есть ли FDD<br/>
 		&nbsp;&nbsp;&nbsp;бит 1 - наличие математического сопроцессора<br/>
 		&nbsp;&nbsp;&nbsp;бит 2 и 3 - Установлена RAM (блоки 16kb) (на некоторых биосах бит 2 указывает наличие PS/2 мыши, а бит 3 - зарезервирован)<br/>
 		&nbsp;&nbsp;&nbsp;бит 4 и 5 - начальный видео режим (0 - EGA/VGA, 1 - 40х25 цвет, 2 - 80х25 цвет, 3 - 80х25 ч/б)<br />
 		&nbsp;&nbsp;&nbsp;биты 6 и 7 кол-во FDD минус 1<br/>
-		&nbsp;&nbsp;&nbsp;бит 8 - DMA<br/>
-		&nbsp;&nbsp;&nbsp;бит 9,10,11 - количество RS-232 <br/>
+		&nbsp;&nbsp;&nbsp;бит 8 - есть DMA (может устанавливаться не правильно)<br/>
+		&nbsp;&nbsp;&nbsp;биты 9,10,11 - количество RS-232 (COM) <br/>
 		&nbsp;&nbsp;&nbsp;бит 12 - наличие Game Port<br/>
 		&nbsp;&nbsp;&nbsp;бит 13 - наличие модемной платы или LPT принтера (зависит от BIOS)<br/>
 		&nbsp;&nbsp;&nbsp;бит 14 и 15 - Количество LPT устройств<br/>
+		так же иногда добавляются следующие поля:
+		&nbsp;&nbsp;&nbsp;бит 23 - сопроцессор Weitek доступен в реальном режиме процессора
+		&nbsp;&nbsp;&nbsp;бит 24 - сопроцессор Weitek присутствует
+		&nbsp;&nbsp;&nbsp;бит 25 - DMA доступен для паралельного порта
+		&nbsp;&nbsp;&nbsp;бит 26 - IRQ DMA для паралельного порта
+		&nbsp;&nbsp;&nbsp;биты 27-28 - канал DMA для паралельного порта:
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 == DMA0
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 == предположительно, DMA0
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 - резерв
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 == DMA3
 </body>
 </html>
