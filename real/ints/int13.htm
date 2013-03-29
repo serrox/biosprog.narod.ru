@@ -179,18 +179,18 @@ ES:BX — адрес таблицы дефектов.<br />
 <table border=1 width=100%>
 <tr><td>Код</td><td>Значение</td></tr><tr><td valign=top>
 00</td><td>Нет ошибки</td></tr><tr><td valign=top>
-01</td><td>Ошибка комманды</td></tr><tr><td valign=top>
+01</td><td>Неизвестная/неверная комманда</td></tr><tr><td valign=top>
 02</td><td>Не найдена адресная метка</td></tr><tr><td valign=top>
 03</td><td>Диск защищён от записи</td></tr><tr><td valign=top>
 04</td><td>Не найден сектор</td></tr><tr><td valign=top>
 05</td><td>Ошибка при сбросе HDD</td></tr><tr><td valign=top>
 06</td><td>Произошла замена дискеты</td></tr><tr><td valign=top>
-07</td><td>Неправильные параметры HDD</td></tr><tr><td valign=top>
-08</td><td>Переполнение канала DMA</td></tr><tr><td valign=top>
+07</td><td>Ошибка инициализации</td></tr><tr><td valign=top>
+08</td><td>Ошибка DMA</td></tr><tr><td valign=top>
 09</td><td>Выход за приделы 64КБ при работе с DMA</td></tr><tr><td valign=top>
 0Ah</td><td>Плохой сектор</td></tr><tr><td valign=top>
 0Bh</td><td>Плохая дорожка</td></tr><tr><td valign=top>
-0Ch</td><td>Неправильный номер дорожки)</td></tr><tr><td valign=top>
+0Ch</td><td>Неправильный номер дорожки (В некоторых биосах - не правильный номер устройства)</td></tr><tr><td valign=top>
 0Dh</td><td>Неправильный номер сектора</td></tr><tr><td valign=top>
 0Eh</td><td>Обнаружена адресная метка управляющих данных</td></tr><tr><td valign=top>
 0Fh</td><td>Ошибка DMA</td></tr><tr><td valign=top>
@@ -203,9 +203,9 @@ ES:BX — адрес таблицы дефектов.<br />
 40h</td><td>Сбой при поиске дорожки</td></tr><tr><td valign=top>
 80h</td><td>Ошибка таймаута</td></tr><tr><td valign=top>
 AAh</td><td>Диск не готов</td></tr><tr><td valign=top>
-BBh</td><td>Неизвестная ошибка</td></tr><tr><td valign=top>
+BBh</td><td>Неисовместимый контроллер</td></tr><tr><td valign=top>
 CCh</td><td>Сбой при записи</td></tr><tr><td valign=top>
-E0h</td><td>Ошибка регистра состояния</td></tr><tr><td valign=top>
+E0h</td><td>Неразрешимая ошибка контроллера</td></tr><tr><td valign=top>
 FFh</td><td>Ошибка при чтении</td></tr>
 </table>
 </body>
