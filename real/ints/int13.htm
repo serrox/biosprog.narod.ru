@@ -288,7 +288,7 @@ ES:BX — адрес таблицы дефектов.<br />
 </td></tr>
 </table>
 <br />
-<a name=code>Коды ошибок INT13h</a><br />
+<a name=code>Коды ошибок классического API</a><br />
 <table border=1 width=100%>
 <tr><td>Код</td><td>Значение</td></tr><tr><td valign=top>
 00</td><td>Нет ошибки</td></tr><tr><td valign=top>
@@ -603,6 +603,19 @@ FFh</td><td>Ошибка при чтении</td></tr></table><br />
 	<b>Выход:</b><br />
 	AH - состояние дисковой подсистемы<br />
 	Если флаг переноса установлен - произошла ошибка</td></tr>
+</table>
+
+Коды состояния дисковой подсистемы(коды ошибок)
+Расширенный дисковый API использует те же коды ошибок, что и класический, а так же определяет несколько новых<br />
+<table border=1 width=100%>
+<tr><td>Код</td><td>Значение</td></tr><tr><td valign=top>
+B0</td><td>Диск не заблокирован</td></tr><tr><td valign=top>
+B1</td><td>Диск заблокирован</td></tr><tr><td valign=top>
+B2</td><td>Диск не имеет съёмного носителя</td></tr><tr><td valign=top>
+B3</td><td>Диск занят (используется)</td></tr><tr><td valign=top>
+B4</td><td>Превышено количество блокировок</td></tr><tr><td valign=top>
+B5</td><td>Пропытка извлечения носителя провалилась</td></tr><tr><td valign=top>
+B6</td><td>Диск защищён от чтения</td></tr>
 </table>
 </body>
 </html>
