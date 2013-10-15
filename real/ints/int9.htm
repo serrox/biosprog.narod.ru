@@ -3,10 +3,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Низкоуровневое програмирование</title>
-	<meta name="keywords" content="программирование BIOS INT INT9 реальный режим ассемблер 16bit IRQ1 клавиатура" />
+	<meta name="keywords" content="программирование, BIOS, INT, INT 9, реальный режим, ассемблер, 16bit, IRQ1, клавиатура" />
 	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 09" />
 </head>
 <body>
+<!-- Yandex.Metrika counter -->
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
+<script type="text/javascript">
+try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
+          trackLinks:true});
+} catch(e) { }
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 09h: прерывание от клавиатуры.</b><br />
 	<p align=centr><h2>INT 09h: прерывание от клавиатуры.</h2></p>
 		Это аппаратно генерируемое прерывание (IRQ 1) выполняется при каждом нажатии и отпускании клавиши. Код ROM-BIOS интерпретирует это, сохраняя значения в буфере клавиатуры по адресу 0:041e. Он также обрабатывает специальные случаи клавиш PrtSc и SysReq, и отслеживает состояние клавиш Shift и различных Lock. <br /><br />

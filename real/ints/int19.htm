@@ -3,10 +3,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Низкоуровневое програмирование</title>
-	<meta name="keywords" content="программирование BIOS INT INT19 реальный режим ассемблер 16bit перезагрузка" />
+	<meta name="keywords" content="программирование, BIOS, INT, INT 19, реальный режим, ассемблер, 16bit, перезагрузка" />
 	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 19" />
 </head>
 <body>
+<!-- Yandex.Metrika counter -->
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
+<script type="text/javascript">
+try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
+          trackLinks:true});
+} catch(e) { }
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 19h: начальный загрузчик.</b><br />
 	<h2>INT 19h: начальный загрузчик.</h2>
 	Этот вектор рассматривается после POST , чтобы попытаться загрузить и выполнить какой-либо код "начального вызова" на дискете или твердом диске. Данные в секторе 1 дорожки 0 головки 0 дисковода 0 для первого откликнувшегося диска (дискеты или твердого диска) загружаются по абсолютному адресу 0000:7c00, и управление передается по этому адресу. если опрос всех дисков неудачен, управление передается на прерывание <a href=int18.htm>INT 18h </a>.<br /> 
