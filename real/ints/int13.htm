@@ -5,6 +5,11 @@
 	<title>Низкоуровневое програмирование</title>
 	<meta name="keywords" content="программирование, BIOS, INT, INT 13, реальный режим, ассемблер, 16bit, дисковый сервис" />
 	<meta name="description" content="Низкоуровневое программирование: Прерывания БИОС: INT 13" />
+    <style type="text/css">
+        .auto-style1 {
+            height: 26px;
+        }
+    </style>
 </head>
 <body>
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 13h: Дисковый ввод-вывод .</b><br />
@@ -380,7 +385,158 @@ FFh</td><td>Ошибка при чтении</td></tr></table><br />
 	<b>Примечание:</b><br />
 	Пакет адресации описан в <a href="#42">функции 42h</a>.
 	Если произошла ошибка в процессе проверки, то в поле число блоков записывается число проверенных блоков</td></tr><tr><td valign=top>
-45h</td><td>
+45h</td><td>Заблокировать/разблокировать устройство<br />
+	<b>Вход:</b><br />
+	DL - номер диска(80h ... 0FFh)<br />
+	AL :<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0 - заблокировать<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 1 - разблокировать<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 2 - узнать статус<br /><br />
+	<b>Выход:</b><br />
+	AH - состояние дисковой подсистемы<br />
+	AL - состояние диска
+	Если флаг переноса установлен - произошла ошибка<br /><br />
+	<b>Примечание:</b><br />
+	Эта функция подразумевает, что носитель информации нельзя извлечь, пока устройство заблокированно.<br />
+	Эта функция поддерживает до 255 блокировок на устройство. Для каждой блокировки необходима своя команда разблокировки.<br />
+	Если подать команду разблокировки на разблокированный диск, функция вернёт ошибку.<br />
+	Некоторые диски с несъёмными носителями информации допускают использование команды блокировки. Точный смысл этой команды в таком случае зависит от производителя жёсткого диска.</td></tr><tr><td valign=top>
+46h</td><td>Извлечь носитель информации из устройства<br />
+	<b>Вход:</b><br />
+	DL - номер диска(80h ... 0FFh)<br />
+	AL = 00 (резерв)<br /><br />
+	<b>Выход:</b><br />
+	AH - состояние дисковой подсистемы<br />
+	Если флаг переноса установлен - произошла ошибка<br /><br />
+	<b>Примечание:</b><br />
+	Если диск заблокирован, то функция вернёт ошибку.<br />
+	Если диск имеет несъёмный носитель, то функция вернёт ошибку.<br />
+	При попытке извлечь носитель из пустого дисковода функция вернёт ошибку.</td></tr><tr><td valign=top>
+47h</td><td>Расширенный поиск<br />
+	<b>Вход:</b><br />
+	DL - номер диска(80h ... 0FFh)<br />
+	DS:SI - адрес пакета адресации<br /><br />
+	<b>Выход:</b><br />
+	AH - состояние дисковой подсистемы<br />
+	Если флаг переноса установлен - произошла ошибка<br /><br />
+	<b>Примечание:</b><br />
+	Это ыункция позволяет сообщить устройству, какой следующий блок понадобится системе</td></tr><tr><td valign=top>
+48h</td><td>Получить параметры диска<br />
+	<b>Вход:</b><br />
+	DL - номер диска(80h ... 0FFh)<br />
+	DS:SI - адрес буфера для сохранения параметров(не менее 26 байт, рекомендуется 66)<br /><br />
+	<b>Выход:</b><br />
+	AH - состояние дисковой подсистемы<br />
+	Если флаг переноса установлен - произошла ошибка<br />
+	По адресу DS:SI расположена таблица с параметрами диска:<br />
+	<table width=100% border=1><tr><td>
+		Смещение</td><td>Размер</td><td>Смысл</td></tr><tr><td valign=top>
+		00</td><td> WORD</td><td>Размер буфера в байтах. Должен быть установлен до вызова функции.</td></tr><tr><td valign=top>
+		02</td><td> WORD</td><td> бит 0 : "Прозрачное" управление сообщениями о нарушении границ при сипользовании DMA<br />
+								  бит 1 : Информаци о геометрии диска (значения по смещениям 4, 8 и 12) достоверна<br />
+								  бит 2 : Диск является устройством со сменным носителем. Если этот бит сброщен, то значение по смещению 4 не достовено, вне зависимости от значения бита 1<br />
+								  бит 3 : Диск поддерживает режим записи с верификацией<br />
+								  бит 4 : Устройство подаёт сигнал при смене носителя (имеет смысл, если бит 2 установлен)<br />
+								  бит 5 : Устройство может быть заблокированно<br />
+								  бит 6 : Съёмный носитель в дисководе отсутствует, по смещениям 4, 8 и 12 записаны максимально возможные для этого устройства значения<br />
+								  бит 7 : БИОС использует функцию 50h прерывания 13h для доступа к устройству<br />
+								  биты 8-15 : резерв</td></tr><tr><td valign=top>
+		04</td><td> DWORD</td><td>Количество цилиндров</td></tr><tr><td valign=top>
+		08</td><td> DWORD</td><td>Количество головок</td></tr><tr><td valign=top>
+		12</td><td> DWORD</td><td>Количество секторов на треке</td></tr><tr><td valign=top>
+		16</td><td> QWORD</td><td>Количество секторов на диске</td></tr><tr><td valign=top>
+		24</td><td> WORD</td><td>Количество байт в секторе</td></tr><tr><td valign=top>
+		26</td><td> DWORD</td><td>Указатель на таблицу конфигурации EDD (сегмент:смещение). Значение FFFFh:FFFFh означает, что таблица не доступна.</td></tr><tr><td valign=top>
+		30</td><td> WORD</td><td>== 0BEDD - признак того, что дальнейшие поля присутствуют</td></tr><tr><td valign=top>
+		32</td><td> BYTE</td><td>Количество байт в таблице начиная со смещения 30h</td></tr><tr><td valign=top>
+		33</td><td> BYTE</td><td>Резерв</td></tr><tr><td valign=top>
+		34</td><td> WORD</td><td>Резерв</td></tr><tr><td valign=top>
+		36</td><td> 4*BYTE</td><td>Тип шины:<br />
+								  "PCI " (50h, 43h, 49h, 20h) - шина PCI или совместимая<br />
+								  "PCIX" (50h, 43h, 49h, 58h) - шина PCI-X<br />
+								  "IBND" (49h, 42h, 4Eh, 44h) - шина InfiniBand<br />
+								  "XPRS" (58h, 50h, 52h, 53h) - шина PCI-Express<br />
+								  "HTPT" (48h, 54h, 50h, 54h) - шина HyperTransport<br />
+								  "ISA " (49h, 53h, 41h, 20h) - шина ISA</td></tr><tr><td valign=top>
+		40</td><td> 8*BYTE</td><td> Тип интерфейса<br />
+								  "ATA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" &nbsp;(41h, 54h, 41h, 20h, 20h, 20h, 20h, 20h) - Устройство ATA/ATAPI с набором команд ATA<br />
+								  "ATAPI&nbsp;&nbsp;&nbsp;" (41h, 54h, 41h, 50h, 49h, 20h, 20h, 20h) - Устройство ATA/ATAPI с набором команд ATAPI<br />
+								  "SCSI&nbsp;&nbsp;&nbsp;&nbsp;" &nbsp;&nbsp;(53h, 43h, 53h, 49h, 20h, 20h, 20h, 20h) - SCSI - совместимое устройство<br />
+								  "USB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" &nbsp;&nbsp;(55h, 53h, 42h, 20h, 20h, 20h, 20h, 20h) - Устройство с интерфейсом USB<br />
+								  "1394&nbsp;&nbsp;&nbsp;&nbsp;" &nbsp;&nbsp;(31h, 33h, 39h, 34h, 20h, 20h, 20h, 20h) - Устройство с интерфейсом IEEE 1394 (FireWire)<br />
+								  "FIBRE&nbsp;&nbsp;&nbsp;" &nbsp;(46h, 49h, 42h, 52h, 45h, 20h, 20h, 20h) - Устройство с интерфейсом Fibre Chanel<br />
+								  "I2O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" &nbsp;&nbsp;&nbsp;(49h, 32h, 4Fh, 20h, 20h, 20h, 20h, 20h) - Устройство подключено к шине I<sub>2</sub>O<br />
+								  "RAID&nbsp;&nbsp;&nbsp;&nbsp;" &nbsp;(52h, 41h, 49h, 44h, 20h, 20h, 20h, 20h) - Устройство является частью RAID-массива<br />
+								  "SATA&nbsp;&nbsp;&nbsp;&nbsp;" (53h, 41h, 54h, 41h, 20h, 20h, 20h, 20h) - Устройство с интерфейсом SATA<br />
+								  "SAS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" &nbsp;&nbsp;(53h, 41h, 53h, 20h, 20h, 20h, 20h, 20h) - Устройство с интерфейсом SAS</td></tr><tr><td valign=top>
+		48</td><td> QWORD</td><td> Путь на шине</td></tr><tr><td valign=top>
+		56</td><td> QWORD</td><td> Путь к устройству</td></tr><tr><td valign=top>
+		64</td><td> BYTE</td><td> Резерв</td></tr><tr><td valign=top>
+		65</td><td> BYTE</td><td> Контрольная сумма</td></tr></table><br /><br />
+	<b>Примечание:</b><br />
+	Значения в таблице конфигурации EDD и её адрес могут менятся при вызове функций EDD<br />
+	Предварительная редакция 4-ой версии стандарта EDD утверждает, что поле "путь к устройству" занимает 16 байт, а остальные поля сдвинуты на 8 байт дальше<br />
+	Путь на шине определяется по следующей логике:<br />
+	<table width=100% border=1><tr><td class="auto-style1">Шина</td><td class="auto-style1">Смещение в таблице параметров диска</td><td class="auto-style1">Размер</td><td class="auto-style1">Смысл</td></tr><tr><td valign=top rowspan="3">
+		ISA</td><td valign=top>
+						   48</td><td>WORD</td><td>Адрес устройства.</td></tr><tr><td valign=top>
+						   50</td><td>WORD</td><td>Резерв.</td></tr><tr><td valign=top>
+						   52</td><td>DWORD</td><td>Резерв.<td></tr><tr><td valign=top rowspan="5">
+		PCI, PCI-Express, HyperTransport, PCI-Express</td><td valign=top>
+						   48</td><td>BYTE</td><td>Номер шины. Значение FFh означает, что это поле не используется.</td></tr><tr><td valign=top>
+						   49</td><td>BYTE</td><td>Номер устройства. Значение FFh означает, что это поле не используется.</td></tr><tr><td valign=top>
+						   50</td><td>BYTE</td><td>Номер функции. Значение FFh означает, что это поле не используется.</td></tr><tr><td valign=top>
+						   51</td><td>BYTE</td><td>Номер канала. Значение FFh означает, что это поле не используется, кроме случая, когда устройство имеет интерфейс SATA (в этом случае данное поле всегда равно FFh).</td></tr><tr><td valign=top>
+						   53</td><td>DWORD</td><td>Резерв.</td></tr><tr><td valign=top>
+		InfiniBand</td><td valign=top>
+						   48</td><td>QWORD</td><td>Резерв.</td></tr>
+	</table><br /><br />
+	Путь к устройству определяется по следующей логике:<br />
+	<table width=100% border=1><tr><td class="auto-style1">Интерфейс</td><td class="auto-style1">Смещение в таблице параметров диска</td><td class="auto-style1">Размер</td><td class="auto-style1">Смысл</td></tr><tr><td valign=top rowspan="2">
+		ATA</td><td valign=top>
+						   56</td><td>BYTE</td><td>Номер устройства</td></tr><tr><td valign=top>
+						   57</td><td>7*BYTE</td><td>Резерв</td></tr><tr><td valign=top rowspan="3">
+		ATAPI</td><td valign=top>
+						   56</td><td>BYTE</td><td>Номер устройства</td></tr><tr><td valign=top>
+						   57</td><td>BYTE</td><td>Номер логического устройства</td></tr><tr><td valign=top>
+						   58</td><td>6*BYTE</td><td>Резерв</td></tr><tr><td valign=top rowspan="2">
+		SCSI</td><td valign=top>
+						   56</td><td>BYTE</td><td>Номер устройства</td></tr><tr><td valign=top>
+						   58</td><td>6*BYTE</td><td>Резерв</td></tr><tr><td valign=top rowspan="2">
+		USB</td><td valign=top>
+						   56</td><td>BYTE</td><td>Номер TBD</td></tr><tr><td valign=top>
+						   57</td><td>7*BYTE</td><td>Резерв</td></tr><tr><td valign=top>
+		1394</td><td valign=top>
+						   56</td><td>QWORD</td><td>64-х битный GUID</td></tr><tr><td valign=top>
+		FIBRE</td><td valign=top>
+						   56</td><td>QWORD</td><td>64-х битный WWN</td></tr><tr><td valign=top>
+		I2O</td><td valign=top>
+						   56</td><td>QWORD</td><td>64-х битный тэг</td></tr><tr><td valign=top>
+		RAID</td><td valign=top>
+						   56</td><td>QWORD</td><td>Номер RAID-массива</td></tr><tr><td valign=top rowspan=3>
+		SATA</td><td valign=top>
+						   56</td><td>BYTE</td><td>Номер порта</td></tr><tr><td valign=top>
+						   57</td><td>BYTE</td><td>Множитель порта</td></tr><tr><td valign=top>
+						   58</td><td>6*BYTE</td><td>Резерв</td></tr><tr><td valign=top>
+		SAS</td><td valign=top>
+						   56</td><td>QWORD</td><td>64-х битный адрес</td></tr>
+	</table>
+	Как говорилось выше, предварительная редакция 4-ой версии стандарта EDD утверждает, что поле "путь к устройству" занимает 16 байт. В большинстве случаев дополнительные 8 байт зарезервированны, но есть неоторые исключения:<br />
+	путь к SCSI устройству состоит из слова "номер SCSI ID" и четверного слова "номер логического устройства"<br />
+	путь к FIBRE устройству в добавленой части содержит четверное слово "номер логического устройства"<br />
+	путь к SAS устройству в добавленой части содержит четверное слово "номер логического устройства"<br /><br />
+	Таблица конфигурации EDD выглядит следующим образом:<br />
+	<table width=100% border=1><tr><td>Смещение</td><td>Размер</td><td>Смысл</td></tr><tr><td valign=top>
+		0</td><td> WORD</td><td>Адрес порта ввода-вывода</td></tr><tr><td valign=top>
+		2</td><td> WORD</td><td>Адрес управляющего порта</td></tr><tr><td valign=top>
+		4</td><td> BYTE</td><td>Зарезервированно для использования БИОСом<br />
+						Для Phoenix Bios:<br />
+						биты 0-3 : резерв<br />
+						бит 4 : 0 = Master, 1 = Slave<br />
+						бит 5 : резерв (RBIL утверждает, что бит установлен, документация - что сброшен)<br />
+						бит 6 : используется LBA<br />
+						бит 7 : резерв, установлен</td></tr><tr><td valign=top>
+	</table>
 </table>
 </body>
 </html>
