@@ -3,10 +3,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Низкоуровневое програмирование</title>
-	<meta name="keywords" content="программирование DOS INT28 реальный режим ассемблер квант времени" />
+	<meta name="keywords" content="программирование, DOS, INT 28, реальный режим, ассемблер, квант времени" />
 	<meta name="description" content="Низкоуровневое программирование: Прерывания DOS: INT 28h: Квант времени DOS." />
 </head>
 <body>
+<!-- Yandex.Metrika counter -->
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
+<script type="text/javascript">
+try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
+          trackLinks:true});
+} catch(e) { }
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=ints.htm>Прерывания DOS</a> - <b>INT 28h: Квант времени DOS.</b><br />
 	<h2>INT 28h: Квант времени DOS.</h2>
 Это <b><font color=red>НЕДОКУМЕНТИРОВАННОЕ</font></b> прерывание DOS использует, когда ждет нажатия клавиши, а также перед вызовом некоторых функций DOS с номерами до 0Ch включительно. PRINT (спулер DOS) перехватывает этот вектор, чтобы найти квант времени для чтения файлов и вывода на принтер. это прерыание используется также различными резидентными popup-программами (TSR).<br /><br />

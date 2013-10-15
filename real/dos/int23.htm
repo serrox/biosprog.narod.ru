@@ -3,10 +3,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Низкоуровневое програмирование</title>
-	<meta name="keywords" content="программирование DOS INT23 реальный режим ассемблер" />
+	<meta name="keywords" content="программирование, DOS, INT 23, реальный режим, ассемблер" />
 	<meta name="description" content="Низкоуровневое программирование: Прерывания DOS: INT 23h: Адрес Control-Break." />
 </head>
 <body>
+<!-- Yandex.Metrika counter -->
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
+<script type="text/javascript">
+try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
+          trackLinks:true});
+} catch(e) { }
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=ints.htm>Прерывания DOS</a> - <b>INT 23h: Адрес Control-Break.</b><br />
 	<h2>INT 23h: Адрес Control-Break.</h2>
     Адрес в этом векторе (0000:008c) - это адрес, по которому передается управление, когда DOS распознает, что пользователь нажал Ctrl-Break. Адрес по вектору INT 23H копируется в поле PSP Ctrl-Break Address функциями DOS 26H (создать PSP) и 4cH (EXEC). Исходное значение адреса обработчика Ctrl-Break восстанавливается из PSP при завершении программы. таким образом, по завершении порожденного процесса будет восстановлен адрес обработчика Ctrl-Break из родительского процесса. <br /><br />
