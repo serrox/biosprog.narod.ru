@@ -107,7 +107,7 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
     <b>Вход:</b><br />
 	CX - время ожидания в микросекундах (старшая часть)<br/>
 	DX - время ожидания в микросекундах (младшая часть)<br/><br/>
-	<b>Примечание:</b>
+	<b>Примечание:</b><br/>
 	На большинстве систем время ожидания округляедся до кратного 977 милисекундам<br/>
 	Не реккомендуется указывать в качестве задержки значения меньше 1000 микросекунд (3e8h)</td></tr><tr><td valign=top>
   87h</td><td>Переслать блок extended-памяти.<br/>
@@ -127,17 +127,29 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 	&nbsp;&nbsp;&nbsp;&nbsp;db 93h &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;разрешены чтение и запись<br/>
 	&nbsp;&nbsp;&nbsp;&nbsp;dw 0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;пустое (резервное) слово<br/>
 	&nbsp;&nbsp;&nbsp;&nbsp;db 16 dup (0) 16 пустых байтов<br/><br/>
-	<b>Примечание:</b>
+	<b>Выход:</b><br />
+	AL - статус:<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;0 - успешно<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;1 - ошибка чётности<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;2 - ошибка прерывания<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;3 - переключение линии A20 не удалось<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;80h - неиизвестная команда<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;86h - неизвестная функция<br /><br />
+	<b>Примечание:</b><br/>
 	Прерывания могут быть запрещены в процессе перемещения данных.</td></tr><tr><td valign=top>
-  <a name=88>88h</a></td><td>размер extended-памяти.<br/>
-	<font color=red><b>Только AT-совместимые компьютеры(не более 15 иб)</b></font><br/>
-	выход: AX = число непрерывных 1K блоков сверх 1M (1024K)</td></tr><tr><td valign=top>
-  89h</td><td>Войти в режим Protected (286 Virtual memory). это полезная штука, если вы не знаете, что это за зверь - Protected Mode i286.<br/>
-	вход: ES:SI => 8-элементная таблица глобальных дексрипторов (GDT) (ниже)<br/>
-	BH = смещение в IDT начала первых 8 аппаратных прерываний<br/>
-	BL = смещение в IDT начала вторых 8 аппаратных прерываний<br/>
-	выход: AH = 0, если не было ошибок все сегментные регистры изменяются. AX и BP теряются. 80286 входит в режим Protected без прямого выхода в режим Real.<br />
-    структура GDT:<br/>
+  <a name=88>88h</a></td><td>Размер extended-памяти.(не более 64Мб)<br/>
+	<font color=red><b>Только AT-совместимые компьютеры</b></font><br/><br/>
+	<b>Выход:</b><br />
+	AX = число непрерывных 1Kб блоков сверх 1Mб</td></tr><tr><td valign=top>
+  89h</td><td>Войти в режим Protected (286 Virtual memory). это полезная штука, если вы не знаете, что это за зверь - Protected Mode i286.<br/><br/>
+    <b>Вход:</b><br />
+	ES:SI => 8-элементная таблица глобальных дексрипторов (GDT) (ниже)<br/>
+	BH = смещение в IDT начала первых 8 аппаратных прерываний (IRQ)<br/>
+	BL = смещение в IDT начала вторых 8 аппаратных прерываний (IRQ)<br/><br/>
+	<b>Выход:</b><br />
+	AH = 0, если не было ошибок все сегментные регистры изменяются. AX и BP теряются. 80286 входит в режим Protected без прямого выхода в режим Real.<br /><br />
+	<b>Примечание:</b><br/>
+    Cтруктура GDT:<br/>
 	ES:[SI]+00h &nbsp;фиктивный дескриптор &nbsp;&nbsp;&nbsp;&nbsp;(все нули)<br/>
 	ES:[SI]+08h &nbsp;дескриптор этой GDT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(инициализирует пользователь)<br/>
 	ES:[SI]+10h &nbsp;дескриптор для IDT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(инициализирует пользователь)<br/>
@@ -145,50 +157,101 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 	ES:[SI]+20h &nbsp;дескриптор для caller ES (инициализирует пользователь)<br/>
 	ES:[SI]+28h &nbsp;дескриптор для caller SS (инициализирует пользователь)<br/>
 	ES:[SI]+30h &nbsp;дескриптор для caller CS (инициализирует пользователь)<br/>
-	ES:[SI]+38h &nbsp;временный BIOS CS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(все нули)<br/>
-	описание дискриптора будет в разделе типы данных.</td></tr><tr><td valign=top>
+	ES:[SI]+38h &nbsp;временный BIOS CS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(все нули)<br/><br/>
+	Структура Дескриптора:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;dw ? - размер в байтах<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;dw ? - младшая часть адреса начала<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;db ? - старшая часть адреса начала<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;db ? - права доступа:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 0-3 : Тип сегмента:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Для системных десткрипторов:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 - резерв<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 - свободный 16-битный TSS<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 - LDT<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 - занятый 16-битный TSS<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4 - 16-битный шлюз вызова<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 - Шлюз задачи<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 - 16-битный шлюз прерывания<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 - 16-битный шлюз ловушки<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8 - резерв<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9 - свободный 32-битный TSS (i386+)<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 - резерв<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 - занятый 32-битный TSS (i386+)<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12 - 32-битный шлюз вызова (i386+)<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13 - резерв<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14 - 32-битный шлюз прерывания (i386+)<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15 - 32-битный шлюз ловушки (i386+)<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Для десткрипторов приложений:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 0 - было обращение к сегменту<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 1 - для дескриптора данных: доступ на запись, для дескриптора кода: доступ на чтение<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 2 - для дескриптора данных: запись с конца, для дескриптора кода: conforming<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 3 = 0 : данные; = 1 : код<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 4 : Тип дескриптора (установлен -> для приложений; сброшен -> системный)<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 5-6 : Уровень привилегий<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 7 : Установлен -> сегмент находится в оперативной памяти<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;db ? - на i286 резерв, на i386+ расширенные права доступа:
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 0-3 : старшие 4 бита лимита сегмента<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 4 : доступность<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 5 : резерв<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 6 : 16-битный, если сброшен, 32-битный если установлен<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Биты 7 : размерность: блоками по 4Кб, если установлен; байтами, если сброшен<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;db ? - на i286 резерв, на i386+ старшие 8 бит начала сегмента
+	</td></tr><tr><td valign=top>
  <a name=90>90h</a></td><td>Цикл занятости устройства.<br/>
 	<font color=red><b>Только AT-совместимые компьютеры</b></font><br/>
 	По умолчанию, ничего не делает (зарезервированна для многозадачных ОС реального времени)<br /><br/>
-	вход: AL = код типа устройства<br/>
-	00h = твердый диск<br/>
-	01h = дискета<br/>
-	02h = клавиатура<br/>
-	80h = сеть<br/>
-	ES:BX => управляющий блок сети<br/>
-	FDh = запуск мотора дискеты<br/>
-	FEh = принтер</td></tr><tr><td valign=top>
+    <b>Вход:</b><br />
+	AL = код типа устройства<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;00h = твердый диск<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;01h = дискета<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;02h = клавиатура<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;03h = PS/2 мыш<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;04h = PS/2 мыш<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;21h = ожидание ввода с клавиатуры <font color=red><b>Работает не везде</b></font><br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;80h = сеть<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;FBh = звук<font color=red><b>Работает не везде</b></font><br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;FCh = перезапуск диска<font color=red><b>Работает не везде</b></font><br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;FDh = запуск мотора дискеты<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;FEh = принтер<br/>
+	ES:BX => управляющий блок для кодов 80h - BFh (по иным сведеньям 80h - FFh)<br/><br/>
+	<b>Примечание:</b><br />
+	Установленный флаг CF должен означать, что истёкло время ожидания
+	</td></tr><tr><td valign=top>
   91h</td><td>завершить прерывание.<br/>
 	<font color=red><b>Только AT-совместимые компьютеры</b></font><br/>
 	По умолчанию, ничего не делает (зарезервированна для многозадачных ОС реального времени)<br /><br/>
-	вход: AL = код типа устройства (см. подфункцию <a href=#90>90H</a>)<br/>
-	AL = 00H - 7Fh: последовательно используемые устройства<br/>
-	AL = 80H - BFh: реентерабельные устройства (ES:BX => пакет данных)</td></tr><tr><td valign=top>
-	<a name=c0>C0h</a></td><td> Адрес таблицы конфигурации<br />
-	На выходе:      ES:BX = адрес таблицы конфигурации, таблица находится в ПЗУ BIOS;<br />
+    <b>Вход:</b><br />
+	AL = код типа устройства (см. подфункцию <a href=#90>90H</a>)<br/>
+	&nbsp;&nbsp;&nbsp;= 00h - 7Fh: последовательно используемые устройства<br/>
+	&nbsp;&nbsp;&nbsp;= 80h - BFh: реентерабельные устройства (ES:BX => пакет данных)<br/>
+	&nbsp;&nbsp;&nbsp;= C0h - FFh: не доступны через эту функцию</td></tr><tr><td valign=top>
+  <a name=c0>C0h</a></td><td> Адрес таблицы конфигурации<br /><br/>
+	<b>Выход:</b><br />
+	ES:BX = адрес таблицы конфигурации, таблица находится в ПЗУ BIOS;<br />
 	&nbsp;&nbsp;CF = 0 и AH = 0 при успешном вызове прерывания;<br />
-	&nbsp;&nbsp;CF = 1 и AH=86h или AH=80h если данная версия BIOS не поддерживает функцию C0h.<br />
-	формат таблицы:
+	&nbsp;&nbsp;CF = 1 и AH=86h или AH=80h если данная версия BIOS не поддерживает функцию C0h.<br/><br/>
+	<b>Примечание:</b><br />
+	формат таблицы:<br />
 	<table border=1 width=100%>
 	<tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
-	00h</td><td>2 байта</td><td>размер таблицы минус 2 байта</td></tr><tr><td valign=top>
-	02h</td><td>1 байт</td><td>код модели компьютера</td></tr><tr><td valign=top>
-	03h</td><td>1 байт</td><td>суб-код модели компьютера</td></tr><tr><td valign=top>
-	04h</td><td>1 байт</td><td>номер ревизии BIOS минус 1</td></tr><tr><td valign=top>
-	05h</td><td>1 байт</td><td>
+	 00h</td><td>2 байта</td><td>размер таблицы</td></tr><tr><td valign=top>
+	 02h</td><td>1 байт</td><td>код модели компьютера</td></tr><tr><td valign=top>
+	 03h</td><td>1 байт</td><td>суб-код модели компьютера</td></tr><tr><td valign=top>
+	 04h</td><td>1 байт</td><td>номер ревизии BIOS минус 1</td></tr><tr><td valign=top>
+	 05h</td><td>1 байт</td><td>
 	    <table border=1 width=100%><tr><td>
 	    бит</td><td>Описание</td></tr><tr><td valign=top>
 	    0</td><td>В системе установлена двойная шина (ISA + Micro Chanel)</td></tr><tr><td valign=top>
-	    1</td><td>Всистеме установлена шина Micro Chanel</td></tr><tr><td valign=top>
-	    2</td><td>Биос занимает дополнительную область памяти (EBDA)</td></tr><tr><td valign=top>
+	    1</td><td>В системе установлена шина Micro Chanel, если установлен, иначе - ISA</td></tr><tr><td valign=top>
+	    2</td><td>Биос имеет дополнительную область данных (EBDA)</td></tr><tr><td valign=top>
 	    3</td><td>Функция 41h прерывания 15h поддерживается</td></tr><tr><td valign=top>
-	    4</td><td>Прерывание 09h вызывает функцию 41h прерывания 15h</td></tr><tr><td valign=top>
+	    4</td><td>Прерывание 09h вызывает функцию 4Fh прерывания 15h</td></tr><tr><td valign=top>
 	    5</td><td>Присутствуют часы реального времени</td></tr><tr><td valign=top>
 	    6</td><td>Установлен второй контроллер прерывания 8259</td></tr><tr><td valign=top>
-	    7</td><td>Третий DMA конал занят BIOS</td></tr>
+	    7</td><td>Третий канал- DMA занят BIOS</td></tr>
 	    </table>
-	</td></tr><tr><td valign=top>
-	06h</td><td>1 байт</td><td>
+	 </td></tr><tr><td valign=top>
+	 06h</td><td>1 байт</td><td>
 	    <table border=1 width=100%><tr><td>
 	    бит</td><td>Описание</td></tr><tr><td valign=top>
 	    0</td><td>Резерв</td></tr><tr><td valign=top>
@@ -200,8 +263,8 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 	    6</td><td>Функция <a href=int16.htm#9>09 прерывания 16h</a> поддерживается<br /><font color=red>Некорректно устанавливается некоторыми БИОС</font></td></tr><tr><td valign=top>
 	    7</td><td>Присутствует 32-х битный контроллер DMA</td></tr>
 	    </table>
-	</td></tr><tr><td valign=top>
-	07h</td><td>1 байт</td><td>
+	 </td></tr><tr><td valign=top>
+	 07h</td><td>1 байт</td><td>
 	    <table border=1 width=100%><tr><td>
 	    бит</td><td>Описание</td></tr><tr><td valign=top>
 	    0</td><td>SCSI поддерживается в IML</td></tr><tr><td valign=top>
@@ -213,19 +276,19 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 	    6</td><td>Резерв</td></tr><tr><td valign=top>
 	    7</td><td>Резерв</td></tr>
 	    </table>
-	</td></tr><tr><td valign=top>
-	08h</td><td>1 байт</td><td>
+	 </td></tr><tr><td valign=top>
+	 08h</td><td>1 байт</td><td>
 	    <table border=1 width=100%><tr><td>
 	    бит</td><td>Описание</td></tr><tr><td valign=top>
 	    0</td><td>POST поддерживает POSTEXT</td></tr><tr><td valign=top>
-	    1</td><td>система поддерживает разделение памяти на 16M</td></tr><tr><td valign=top>
+	    1</td><td>система поддерживает разделение памяти на отметке 16Mб</td></tr><tr><td valign=top>
 	    2</td><td>Резерв</td></tr><tr><td valign=top>
 	    3-5</td><td>001 - ABIOS НЕ поддерживается<br />010 - ABIOS поддерживается из ROM<br />011 - ABIOS поддерживается, но необходима загрузка в RAM.<br />111 - ABIOS присутствует<br /></td></tr><tr><td valign=top>
 	    6</td><td>В системе присутствует EEPROM</td></tr><tr><td valign=top>
 	    7</td><td>(занято IBM)</td></tr>
 	    </table>
-	</td></tr><tr><td valign=top>
-	09h</td><td>1 байт</td><td>
+	 </td></tr><tr><td valign=top>
+	 09h</td><td>1 байт</td><td>
 	    <table border=1 width=100%><tr><td>
 	    бит</td><td>Описание</td></tr><tr><td valign=top>
 	    0</td><td>flash EPROM BIOS</td></tr><tr><td valign=top>
@@ -233,11 +296,12 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 	    4-2</td><td>Резерв</td></tr><tr><td valign=top>
 	    5-7</td><td>(занято IBM)</td></tr>
 	    </table>
-	</td></tr><tr><td valign=top>
-	0Ah - далее</td><td>&nbsp;</td><td><a href=15\spbios.htm>область данных, смысл которых зависит от производителя.</a></td></tr>
+	 </td></tr><tr><td valign=top>
+	 0Ah - далее</td><td>&nbsp;</td><td><a href=15\spbios.htm>область данных, смысл которых зависит от производителя.</a></td></tr>
 	</table>
+	Некоторые биосы используют не все байты возможностей. К примеру, в Phoenix BIOS 4 rev. 6 User manual байты со смещёнием 7 и 8 отмечены как зарезервированные.
 	</td></tr><tr><td valign=top>
-  C1h</td><td> Получить сегмент дополнительной области памяти BIOS (EBDA)<br/>
+  C1h</td><td> Получить сегмент дополнительной области данных BIOS (EBDA)<br/>
 	Выход:<br/>
 	Если CF установлен: ошибка (AH=80h или AH=86h - данная функция не поддерживается)<br/>
 	Если CF сброшен: ES - сегмент EBDA
