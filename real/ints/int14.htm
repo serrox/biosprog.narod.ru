@@ -22,56 +22,104 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 	<h2>INT 14h: Ввод/вывод через COM порт.</h2>
 	<table width=100% border=1><tr><td>AH</td><td>Описание функции</td></tr><tr><td valign=top>
 	<a name=0>0</a></td><td>инициализировать порт<br /><br />
-	вход: DX = номер порта (0-1)<br />
-	AL = битовые флаги параметра инициализации:<br />
-	&nbsp;&nbsp;биты 0 и 1 : длинна слова<br />
-	&nbsp;&nbsp;бит 2 : стоп-бит 0=1 бит 1=2 бита<br />
-	&nbsp;&nbsp;биты 3 и 4 : чётность (00, 01, 11 - нечёт; 10 чёт)<br />
-	&nbsp;&nbsp;биты 7-5 : скорость (БОД) :<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;000 - 110 ( с FOSSIL - 19200)<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;001 - 150 ( с FOSSIL - 38400)<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;010 - 300<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;011 - 600<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;100 - 1200<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;101 - 2400<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;110 - 4800<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;111 - 9600<br /><br />
-	выход:АН = состояние порта <br />
-	&nbsp;&nbsp;бит 7: тайм-аут<br />
-	&nbsp;&nbsp;бит 6: буфер вывода пуст (без FOSSIL: регистр сдвига передатчика пуст)<br />
-	&nbsp;&nbsp;бит 5: в буфере вывода есть место (без FOSSIL: регистр хранения передатчика пуст)<br />
-	&nbsp;&nbsp;бит 4: обнаружено состояние BREAK<br />
-	&nbsp;&nbsp;бит 3: ошибка синхронизации<br />
-	&nbsp;&nbsp;бит 2: ошибка четности<br />
-	&nbsp;&nbsp;бит 1: ошибка переполнения — данные потеряны<br />
-	&nbsp;&nbsp;бит 0: в буфере ввода есть данные <br />
-	AL = состояние модема <br />
-	&nbsp;&nbsp;бит 7: обнаружена несущая (состояние линии DCD)<br />
-	&nbsp;&nbsp;бит 6: обнаружен звонок (состояние линии RI)<br />
-	&nbsp;&nbsp;бит 5: запрос для передачи (состояние линии DSR)<br />
-	&nbsp;&nbsp;бит 4: сброс для передачи (состояние линии CTS)<br />
-	&nbsp;&nbsp;бит 3: линия DCD изменила состояние<br />
-	&nbsp;&nbsp;бит 2: линия RI изменила состояние<br />
-	&nbsp;&nbsp;бит 1: линия DSR изменила состояние<br />
-	&nbsp;&nbsp;бит 0: линия CTS изменила состояние</td></tr><tr><td valign=top>
-	1</td><td>записать символ в порт<br />
-	Вход: AL - код символа, вероятно в ASCII<br />
-	DX = номер порта (0-1)<br />
-	Выход: AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
-	2</td><td>Читать символ (с ожиданием символа)
-	Вход : DX = номер порта (0-1)<br />
-	Выход : AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)<br />
-	 AL - код символа, вероятно в ASCII</td></tr><tr><td valign=top>
-	3</td><td>Получить текущее состояние порта<br />
-	Вход : DX = номер порта (0-1)<br />
-	Выход : AL = состояние модема (см. функцию <a href=int14.htm#0>0</a>)<br />
-	AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
-	4</td><td>Инициализация FOSSIL-драйвера<br />
-	Вход : DX = номер порта (com1=0 Com2=1 Com3=2 Com4=3)<br />
-	Выход : АХ = 1954h (вероятно иначе - ошибка)<br />
-	BL = максимальный поддерживаемый номер функции<br />
-	ВН = версия спецификации FOSSIL</td></tr><tr><td valign=top>
-	5</td><td>Деинициализация FOSSIL-драйвера<br />
-	Вход : DX = номер порта (com1=0 Com2=1 Com3=2 Com4=3)</td></tr></table>
+		<b>Bход:</b><br/>
+		DX = номер порта (0-3)<br />
+		AL = битовые флаги параметра инициализации:<br />
+		&nbsp;&nbsp;биты 0 и 1 : длинна слова:<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;10 - 7 бит<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;11 - 8 бит<br />
+		&nbsp;&nbsp;бит 2 : стоп-бит 0=1 бит 1=2 бита<br />
+		&nbsp;&nbsp;биты 3 и 4 : проверка на чётность (00, 01 - без проверки; 11 - нечёт; 10 чёт)<br />
+		&nbsp;&nbsp;биты 7-5 : скорость (БОД) :<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;000 - 110<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;001 - 150<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;010 - 300<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;011 - 600<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;100 - 1200<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;101 - 2400<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;110 - 4800<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;111 - 9600<br /><br />
+		<b>Выход</b><br/>
+		АН = состояние порта <br />
+		&nbsp;&nbsp;бит 7: тайм-аут<br />
+		&nbsp;&nbsp;бит 6: регистр сдвига передатчика пуст<br />
+		&nbsp;&nbsp;бит 5: регистр хранения передатчика пуст<br />
+		&nbsp;&nbsp;бит 4: обнаружено состояние BREAK<br />
+		&nbsp;&nbsp;бит 3: ошибка синхронизации<br />
+		&nbsp;&nbsp;бит 2: ошибка четности<br />
+		&nbsp;&nbsp;бит 1: ошибка переполнения — данные потеряны<br />
+		&nbsp;&nbsp;бит 0: в буфере ввода есть данные <br />
+		AL = состояние модема <br />
+		&nbsp;&nbsp;бит 7: Received line signal detect<br />
+		&nbsp;&nbsp;бит 6: Ring indicator<br />
+		&nbsp;&nbsp;бит 5: Data set ready<br />
+		&nbsp;&nbsp;бит 4: Clear to send<br />
+		&nbsp;&nbsp;бит 3: Delta data carrier detect<br />
+		&nbsp;&nbsp;бит 2: Trailing edge ring indicator<br />
+		&nbsp;&nbsp;бит 1: Delta data set ready<br />
+		&nbsp;&nbsp;бит 0: Delta clear to send</td></tr><tr><td valign=top>
+	1</td><td>записать байт в порт<br /><br />
+		<b>Вход:</b><br/>
+		AL - передаваемый байт<br />
+		DX = номер порта (0-3)<br /><br/>
+		<b>Выход:</b><br/>
+		AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
+	2</td><td>Читать байт<br /><br />
+		<b>Вход:</b><br/>
+		DX = номер порта (0-3)<br /><br/>
+		<b>Выход:</b><br/>
+		AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)<br />
+		AL - принятый байт</td></tr><tr><td valign=top>
+	3</td><td>Получить текущее состояние порта<br /><br />
+		<b>Вход:</b><br/>
+		DX = номер порта (0-3)<br /><br/>
+		<b>Выход:</b><br/>
+		AL = состояние модема (см. функцию <a href=int14.htm#0>0</a>)<br />
+		AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
+	4</td><td>Расширенная инициализация<br /><br />
+		<b>Вход:</b><br/>
+		DX = номер порта (0-3)<br />
+		AL - состояние BREAK (0 - не установлено, 1 - установлено)<br/>
+		BH - проверка на чётность:<br />
+		&nbsp;&nbsp;0 - без проверки<br />
+		&nbsp;&nbsp;1 - на нечётность<br />
+		&nbsp;&nbsp;2 - на чётность<br />
+		&nbsp;&nbsp;3 - стэковая на нечётность<br />
+		&nbsp;&nbsp;4 - стэковая на чётность<br />
+		BL - стоп-биты (=0 : 1 бит, =1 : 2 бита для длинны слова 6-8 бит, и полтора для длинны слова 5 бит)<br />
+		CH - длинна слова:<br />
+		&nbsp;&nbsp;0 - 5 бит<br />
+		&nbsp;&nbsp;1 - 6 бит<br />
+		&nbsp;&nbsp;2 - 7 бит<br />
+		&nbsp;&nbsp;3 - 8 бит<br />
+		CL - скорость:<br />
+		&nbsp;&nbsp;0 - 110 бод<br />
+		&nbsp;&nbsp;1 - 150 бод<br />
+		&nbsp;&nbsp;2 - 300 бод<br />
+		&nbsp;&nbsp;3 - 600 бод<br />
+		&nbsp;&nbsp;4 - 1200 бод<br />
+		&nbsp;&nbsp;5 - 2400 бод<br />
+		&nbsp;&nbsp;6 - 6000 бод<br />
+		&nbsp;&nbsp;7 - 9600 бод<br />
+		&nbsp;&nbsp;8 - 19200 бод<br /><br />
+		<b>Выход:</b><br/>
+		AL = состояние модема (см. функцию <a href=int14.htm#0>0</a>)<br />
+		AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
+	5</td><td>Расширенное управление модемом<br />
+		<table width=100% border=1><tr><td>AL</td><td>Описание функции</td></tr><tr><td valign=top>
+		0</td><td>Прочитать управляющий порт модема<br /><br />
+		<b>Вход:</b><br/>
+		DX = номер порта (0-3)<br /><br/>
+		<b>Выход:</b><br/>
+		BL - Значение в управляющем порту мадема</td></tr><tr><td valign=top>
+		1</td><td>Записать в управляющий порт модема<br /><br />
+		<b>Вход:</b><br/>
+		DX = номер порта (0-3)<br />
+		BL - Значение для записи<br /><br />
+		<b>Выход:</b><br/>
+		AL = состояние модема (см. функцию <a href=int14.htm#0>0</a>)<br />
+		AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr>
+		</table></td></tr>
+	</table>
 </body>
 </html>
