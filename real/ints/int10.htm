@@ -29,19 +29,19 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
            AL</td>  <td>Тип</td>    <td>Формат</td> <td>Цвета</td><td>Адрес</td> <td>Количество видеостраниц</td></tr><tr><td>
             0</td>  <td>текст</td>  <td>40x25</td>  <td>16</td>   <td>B8000h</td><td>8</td>                      </tr><tr><td>
             1</td>  <td>текст</td>  <td>40x25</td>  <td>16</td>   <td>B8000h</td><td>8</td>                      </tr><tr><td>
-            2</td>  <td>текст</td>  <td>80x25</td>  <td>16</td>   <td>B8000h</td><td>8</td>                      </tr><tr><td>
-            3*</td>  <td>текст</td> <td>80x25</td>  <td>16</td>   <td>B8000h</td><td>8</td>                      </tr><tr><td>
+            2</td>  <td>текст</td>  <td>80x25</td>  <td>16</td>   <td>B8000h</td><td>4</td>                      </tr><tr><td>
+            3*</td>  <td>текст</td> <td>80x25</td>  <td>16</td>   <td>B8000h</td><td>4</td>                      </tr><tr><td>
             4</td>  <td>графика</td><td>320x200</td><td>4</td>    <td>B8000h</td><td>1</td>                      </tr><tr><td>
             5</td>  <td>графика</td><td>320x200</td><td>4</td>    <td>B8000h</td><td>1</td>                      </tr><tr><td>
-            6 </td> <td>графика</td><td>640x200</td><td>2</td>    <td>B8000h</td><td>1</td>                      </tr><tr><td>
-            7 </td> <td>графика</td><td>720x400</td><td>2</td>    <td>B0000h</td><td>1</td>                      </tr><tr><td>
-           0Dh</td> <td>графика</td><td>320x200</td><td>16</td>   <td>A0000h</td><td>8</td>                      </tr><tr><td>
+            6**</td><td>графика</td><td>640x200</td><td>2</td>    <td>B8000h</td><td>1</td>                      </tr><tr><td>
+            7 </td> <td>текст</td>	<td>80x25</td>	<td>2</td>    <td>B0000h</td><td>1</td>                      </tr><tr><td>
+           0Dh**</td><td>графика</td><td>320x200</td><td>16</td>   <td>A0000h</td><td>8</td>                      </tr><tr><td>
            0Eh </td><td>графика</td><td>640x200</td><td>16</td>   <td>A0000h</td><td>4</td>                      </tr><tr><td>
            0Fh </td><td>графика</td><td>640x350</td><td>2</td>    <td>A0000h</td><td>2</td>                      </tr><tr><td>
            10h </td><td>графика</td><td>640x350</td><td>16</td>   <td>A0000h</td><td>1</td>                      </tr><tr><td>
            11h </td><td>графика</td><td>640x480</td><td>2</td>    <td>A0000h</td><td>1</td>                      </tr><tr><td>
            12h </td><td>графика</td><td>640x480</td><td>16</td>   <td>A0000h</td><td>1</td>                      </tr><tr><td>
-           13h </td><td>графика</td><td>320x200</td><td>256</td>  <td>A0000h</td><td>1</td>                      </tr></table>
+           13h**</td><td>графика</td><td>320x200</td><td>256</td>  <td>A0000h</td><td>1</td>                      </tr></table>
 	<b>Выход:</b><br />
 	AL используется для диагностики ошибок. вот некоторые распространённые коды успешного выполнения:
 	0
@@ -50,6 +50,7 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 	3Fh - установлен шестой режим
 	<b>Примечание:</b><br/>
     *У третьего видеорежима когда загружен шрифт размером 8х8, строка имеет длинну 50 символов<br /><br />
+	**Этот режим может не поддерживаться<br />
 	<b>На самом деле известных режимов великое множество, но большинство из них поддерживается только на некоторой конкретной аппаратной платформе или даже при наличии какой-то конкретной программы в памяти, поэтому я решил не описывать их здесь все.</b><br /><br />
 	Для установки режимов VESA BIOS Extension испульзуйте <a href="int10.htm#4f">функцию 4Fh подфункцию 2 прерывания 10h</a></td></tr><tr><td valign="top">
 <a name=1>01h</a></td><td>
