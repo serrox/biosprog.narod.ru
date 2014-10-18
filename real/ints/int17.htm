@@ -18,26 +18,32 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 </script>
 <noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 17h: Ввод/вывод LPT.</b><br />
-	<h2>INT 17h: Ввод/вывод LPT.</h2>
-	<table width=100% border=1><tr><td valign=top>AH</td><td>Функция</td></tr><tr><td valign=top>
-	0</td><td>печать символа<br />
-	Вход: DL - ASCII код символа<br />
-		DX - номер принтера (0,1 или 2)<br />
-	Выход: AH - флаги состояния принтера (<a href=#2>см. подфункию 2</a>), при этом если бит 0 установлен, то произошла ошибка при печати. </td></tr><tr><td valign=top>
-	1</td><td>Инициализировать порт принтера<br />
-	Вход: DX - омер принтера (0,1 или 2)<br />
-	Выход: AH - <a href=#2>см. подфункию 2</a></td></tr><tr><td valign=top>
-	<a name=2>2</a></td><td> Статус принтера<br />
-	Вход: DX - Номер принтера(0,1 или 2)<br />
-	Выход: AH - флаги состояния<br />
-		бит 0 : ошибка печати<br />
-		биты 1-2 : таймаут<br />
-		бит 3 : ошибка ввода/вывода<br />
-		бит 4 : выбран <br />
-		бит 5 : нет бумаги<br />
-		бит 6 : подтверждение<br />
-		бит 7 : не занят(1) занят(0)</td></tr>
+<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 17h: Ввод/вывод LPT.</b><br />
+<h2>INT 17h: Ввод/вывод LPT.</h2>
+<table width=100% border=1><tr><td valign=top>AH</td><td>Функция</td></tr><tr><td valign=top>
+  0</td><td>печать символа<br /><br/>
+	<b>Вход:</b><br/>
+	DL - ASCII код символа<br />
+	DX - номер принтера (0,1 или 2)<br /><br/>
+	<b>Вход:</b><br/>
+	AH - флаги состояния принтера (<a href=#2>см. подфункию 2</a>), при этом если бит 0 установлен, то произошла ошибка при печати. </td></tr><tr><td valign=top>
+  1</td><td>Инициализировать порт принтера<br /><br/>
+	<b>Вход:</b><br/>
+	DX - номер принтера (0,1 или 2)<br /><br/>
+	<b>Вход:</b><br/>
+	AH - <a href=#2>см. подфункию 2</a></td></tr><tr><td valign=top>
+  <a name=2>2</a></td><td> Статус принтера<br /><br/>
+	<b>Вход:</b><br/>
+	DX - Номер принтера(0,1 или 2)<br /><br/>
+	<b>Вход:</b><br/>
+	AH - флаги состояния<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 0 : ошибка печати<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;биты 1-2 : таймаут<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 3 : ошибка ввода/вывода<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 4 : выбран <br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 5 : нет бумаги<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 6 : подтверждение<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;бит 7 : не занят(1) занят(0)</td></tr>
 	</table>
 </body>
 </html>
