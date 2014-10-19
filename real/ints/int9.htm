@@ -19,7 +19,7 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 <noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 09h: прерывание от клавиатуры.</b><br />
-	<p align=centr><h2>INT 09h: прерывание от клавиатуры.</h2></p>
+	<h2>INT 09h: прерывание от клавиатуры.</h2><br />
 		Это аппаратно генерируемое прерывание (IRQ 1) выполняется при каждом нажатии и отпускании клавиши. Код ROM-BIOS интерпретирует это, сохраняя значения в буфере клавиатуры по адресу 0:041e. Он также обрабатывает специальные случаи клавиш PrtSc и SysReq, и отслеживает состояние клавиш Shift и различных Lock. <br /><br />
 		Резидентные popup-программы, которые обычно предусматривают "кнопку вызова", перехватывают INT 09h и проверяют на определенный ключ примерно так: <br /><br />
 		|&nbsp;&nbsp;&nbsp;&nbsp;push&nbsp;&nbsp;&nbsp;ax<br />

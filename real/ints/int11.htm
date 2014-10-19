@@ -20,9 +20,9 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 <!-- /Yandex.Metrika counter -->
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 11h: Список оборудования.</b><br />
 	<h2>INT 11h: Список оборудования.</h2>
-		Выдаёт информацию об оборудовании системы<br />
+		Выдаёт информацию об оборудовании системы<br /><br />
 		<b>Вход:</b><br/>
-		EAX=0<br />
+		EAX=0<br /><br />
 		<b>Выход:</b><br/>
 		AX - байт конфигурации системы<br/>
 		&nbsp;&nbsp;&nbsp;бит 0 - есть ли FDD (некоторые биосы всегда возвращают нуль)<br/>
@@ -34,16 +34,16 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 		&nbsp;&nbsp;&nbsp;биты 9,10,11 - количество RS-232 (COM) <br/>
 		&nbsp;&nbsp;&nbsp;бит 12 - наличие Game Port<br/>
 		&nbsp;&nbsp;&nbsp;бит 13 - наличие модемной платы или LPT принтера (зависит от BIOS, некоторые всегда возвращают ноль)<br/>
-		&nbsp;&nbsp;&nbsp;бит 14 и 15 - Количество LPT адаптеров<br/>
-		так же иногда добавляются следующие поля:
-		&nbsp;&nbsp;&nbsp;бит 23 - сопроцессор Weitek доступен в реальном режиме процессора
-		&nbsp;&nbsp;&nbsp;бит 24 - сопроцессор Weitek присутствует
-		&nbsp;&nbsp;&nbsp;бит 25 - DMA доступен для паралельного порта
-		&nbsp;&nbsp;&nbsp;бит 26 - IRQ DMA для паралельного порта
-		&nbsp;&nbsp;&nbsp;биты 27-28 - канал DMA для паралельного порта:
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 == DMA0
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 == предположительно, DMA0
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 - резерв
+		&nbsp;&nbsp;&nbsp;бит 14 и 15 - Количество LPT адаптеров<br/><br />
+		так же иногда добавляются следующие поля:<br />
+		&nbsp;&nbsp;&nbsp;бит 23 - сопроцессор Weitek доступен в реальном режиме процессора<br />
+		&nbsp;&nbsp;&nbsp;бит 24 - сопроцессор Weitek присутствует<br />
+		&nbsp;&nbsp;&nbsp;бит 25 - DMA доступен для паралельного порта<br />
+		&nbsp;&nbsp;&nbsp;бит 26 - IRQ DMA для паралельного порта<br />
+		&nbsp;&nbsp;&nbsp;биты 27-28 - канал DMA для паралельного порта:<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 == DMA0<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 == предположительно, DMA0<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10 - резерв<br />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11 == DMA3
 </body>
 </html>
