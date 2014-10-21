@@ -20,15 +20,15 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 <!-- /Yandex.Metrika counter -->
 	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 08h: прерывание от таймера</b><br />
 	<h2>INT 08h: прерывание от таймера</h2><br />
-		Это аппаратно генерируемое прерывание (IRQ 0) вызывается по каждому тику часов реального времени PC. Часы тикают каждые 55мс, или около 18.2 раз в секунду. Код ROM-BIOS для этого прерывания обновляет значение часов на 0:046 сек. этот код также выключает двигатели гибких дисков по истечении примерно двух секунд без операций ввода/вывода.<br /><br />
+		Это аппаратно генерируемое прерывание (IRQ 0) вызывается по каждому тику часов реального времени. На большинстве компьютеров часы тикают каждые 55мс, или около 18.2 раз в секунду. Код BIOS для этого прерывания обновляет значение часов на 0.046 сек. Этот код также выключает двигатели гибких дисков по истечении заданного времени (см. <a href=int1e.htm>INT 1Eh</a>) без операций ввода/вывода.<br /><br />
 		Если вы хотите использовать это прерывание для обработки событий, зависящих от времени, вы должны предусмотреть код, сообщающий системе, когда прерывание закончено. Магическая последовательность такова: <br /><br />
 		|&nbsp;&nbsp;mov al,20h &nbsp;&nbsp;&nbsp;;послать сигнал конец-прерывания<br />
 		|&nbsp;&nbsp;out 20h,al&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; контроллеру прерываний 8259<br /><br />
-		большинство программ используют для этого ROM-BIOS. например, вначале программа пользователя сохраняет вектор ROM-BIOS в переменной с именем cs:[saved_int8]. затем по каждому прерыванию INT 08H выполняется следующий код: <br /><br />
+		большинство программ используют для этого BIOS. Например, вначале программа пользователя сохраняет вектор BIOS в переменной с именем cs:[saved_int8]. затем по каждому прерыванию INT 08H выполняется следующий код: <br /><br />
 		|&nbsp;&nbsp;pushf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;имитировать INT<br />
 		|&nbsp;&nbsp;call  dword ptr cs:[saved_int8]&nbsp;;выполнить нормальную обработку<br />
 		|&nbsp;&nbsp;cmp   cs:my_var,test_value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;теперь сделать свои черные дела<br />
 		|&nbsp;... и т.д. ...<br />
-		|&nbsp;&nbsp;iret&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;возврат в прерванную прикладную программу "переднего плана"<br />
+		|&nbsp;&nbsp;iret&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;возврат в прерванную программу<br />
 </body>
 </html>
