@@ -28,19 +28,19 @@
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int10.htm</loc>
-	<lastmod>2014-10-17</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int11.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int13.htm</loc>
-	<lastmod>2014-10-19</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int15.htm</loc>
-	<lastmod>2014-10-19</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/dos/int21/</loc>
@@ -52,7 +52,7 @@
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int.htm</loc>
-	<lastmod>2014-10-17</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/dos/ints.htm</loc>
@@ -64,11 +64,15 @@
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/15/cas.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
+</url>
+<url>
+	<loc>http://biosprog.narod.ru/real/ints/15/spbios.htm</loc>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int9.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int16.htm</loc>
@@ -177,6 +181,18 @@
 <url>
 	<loc>http://biosprog.narod.ru/real/dos/int21/f1A.htm</loc>
 	<lastmod>2013-10-16</lastmod>
+</url>
+<url>
+	<loc>http://biosprog.narod.ru/real/dos/int21/f1B.htm</loc>
+	<lastmod>2014-10-21</lastmod>
+</url>
+<url>
+	<loc>http://biosprog.narod.ru/real/dos/int21/f1C.htm</loc>
+	<lastmod>2014-10-21</lastmod>
+</url>
+<url>
+	<loc>http://biosprog.narod.ru/real/dos/int21/f1F.htm</loc>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/dos/int21/f21.htm</loc>
@@ -339,6 +355,10 @@
 	<lastmod>2013-10-16</lastmod>
 </url>
 <url>
+	<loc>http://biosprog.narod.ru/real/dos/int21/f57.htm</loc>
+	<lastmod>2014-10-21</lastmod>
+</url>
+<url>
 	<loc>http://biosprog.narod.ru/real/dos/int21/f5a.htm</loc>
 	<lastmod>2013-10-16</lastmod>
 </url>
@@ -351,40 +371,52 @@
 	<lastmod>2013-10-16</lastmod>
 </url>
 <url>
+	<loc>http://biosprog.narod.ru/real/dos/int21/f6c.htm</loc>
+	<lastmod>2014-10-21</lastmod>
+</url>
+<url>
 	<loc>http://biosprog.narod.ru/real/ints/int0.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int1.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21/lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int2.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int3.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int4.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int5.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
+</url>
+<url>
+	<loc>http://biosprog.narod.ru/real/ints/int6.htm</loc>
+	<lastmod>2014-10-21</lastmod>
+</url>
+<url>
+	<loc>http://biosprog.narod.ru/real/ints/int7.htm</loc>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int8.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/inte.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int12.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int14.htm</loc>
@@ -396,7 +428,7 @@
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int18.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int19.htm</loc>
@@ -412,19 +444,19 @@
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int1c.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int1d.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int1e.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/ints/int1f.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/dos/int20.htm</loc>
