@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Низкоуровневое програмирование</title>
-	<meta name="keywords" content="программирование, DOS, INT 2F, реальный режим, ассемблер, мультиплекс" />
-	<meta name="description" content="Низкоуровневое программирование: Прерывания DOS: INT 2Fh: Мультиплексное прерывание." />
+	<meta name="keywords" content="программирование, DOS, INT 2F, реальный режим, ассемблер, печать" />
+	<meta name="description" content="Низкоуровневое программирование: Прерывания DOS: INT 2Fh: Печать." />
 </head>
 <body>
 <!-- Yandex.Metrika counter -->
@@ -18,10 +18,9 @@ try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
 </script>
 <noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=ints.htm>Прерывания DOS</a> - <b>INT 2Fh: Мультиплексное прерывание.</b><br />
-	<h2>INT 2Fh: Мультиплексное прерывание.</h2>
-Вход: <br />
-<table border=1 width=100%><tr><td>AH</td><td>номер мультиплексного процесса </td></tr><tr><td valign=top>
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=ints.htm>Прерывания DOS</a> - <b>INT 2Fh: Печать.</b><br />
+	<h2>INT 2Fh: Печать.</h2>
+<!--<table border=1 width=100%><tr><td>AH</td><td>номер мультиплексного процесса </td></tr><tr><td valign=top>
 01h</td><td> резидентная порция команды DOS 'PRINT' <br />
  	<table border=1 width=100%><tr><td>AL</td><td>подфункция</td></tr><tr><td valign=top>
 	0</td><td>опросить статус установки процесса <br />
@@ -109,6 +108,9 @@ AH=10h - мультиплексный номер резидентной порц
 Ваш процесс должен по меньшей мере использовать подфункцию AL=0, чтобы вы могли выяснить, не был ли процесс уже установлен ранее. 
 Замечание: 
 
-Если ваш процесс использует сервис DOS, или выполняется с незамаскированными прерываниями, то он должен быть реентерабельным.
+Если ваш процесс использует сервис DOS, или выполняется с незамаскированными прерываниями, то он должен быть реентерабельным.-->
+<h4>Для DOS 3.0 и выше</h4>
+<table border=1 width=100%><tr><td>AH</td><td>номер мультиплексного процесса </td></tr><tr><td valign=top>
+
 </body>
 </html>
