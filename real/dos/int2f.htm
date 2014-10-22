@@ -137,8 +137,38 @@ AH=10h - мультиплексный номер резидентной порц
 </ul>
 <a name=print><h3>API Печати для DOS 3.0+</h3></a><br />
 Резидентная часть команды PRINT<br />
-В AH передаётся 0
-
-
+В AH передаётся 1
+<table border=1 width=100%><tr><td>AL</td><td>подфункция</td></tr><tr><td valign=top>
+  0</td><td>Проверит наличие<br /><br/>
+	<b>Выход:</b><br/>
+	AL == 00h =&gt; не установлен, можно устанавливать <br />
+	AL == 01h =&gt; не установлен, нельзя устанавливать <br />
+	AL == FFh =&gt; установлен<br /><br />
+	<b>Примечание:</b><br/>
+	Novell DOS версии 7 обнуляет регистр AH</td></tr><tr><td valign=top>
+  1</td><td/>Добавить файл в очередь печати<br /><br/>
+	<b>Вход:</b><br/>
+	DS:DX =&gt; направляемый пакет <br />
+	Байт 0 -уровень (всегда 0 для DOS 3.0, 3.1 и 3.2) <br />
+	Байты 1-2 - адрес (смещение,сегмент) строки ASCIIZ, содержащей полный путь к файлу, направляемого в очередь печати<br /><br/>
+	<b>Выход:</b><br/>
+	Если установлен флаг CF, то произошла ошибка, и AX содержит код ошибки
+  </td></tr>
+</table>
+<br />
+<a name=code>Коды ошибок API Печати для DOS 3.0+</a><br />
+<table border=1 width=100%>
+<tr><td>Код</td><td>Значение</td></tr><tr><td valign=top>
+01</td><td>Невеврный номер функции</td></tr><tr><td valign=top>
+02</td><td>Файл не найден</td></tr><tr><td valign=top>
+03</td><td>Путь не найден</td></tr><tr><td valign=top>
+04</td><td>Очередь переполнена</td></tr><tr><td valign=top>
+05</td><td>Нет доступного HANDLE</td></tr><tr><td valign=top>
+06</td><td>Неверный HANDLE</td></tr><tr><td valign=top>
+08</td><td>Очередь переполнена</td></tr><tr><td valign=top>
+09</td><td>Программа печати занята</td></tr><tr><td valign=top>
+0Ch</td><td>Полный путь к файлу слишком длинный</td></tr><tr><td valign=top>
+0Fh</td><td>Неверный диск</td></tr>
+</table>
 </body>
 </html>
