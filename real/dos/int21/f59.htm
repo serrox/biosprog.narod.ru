@@ -8,17 +8,116 @@
 </head>
 <body>
 <!-- Yandex.Metrika counter -->
-<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
 <script type="text/javascript">
-try { var yaCounter2269369 = new Ya.Metrika({id:2269369,
-          trackLinks:true});
-} catch(e) { }
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter2269369 = new Ya.Metrika({id:2269369,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
 </script>
 <noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 59h: Получить информацию о последней ошибке</b><br />
-	<h2>Функция 59h: Получить информацию об последней ошибке.</h2>
-	
+	<h2>Функция 59h: Получить информацию об последней ошибке.</h2><br/>
+	<b>Вход:</b><br/>
+	AH = 59h<br />
+	BX = 0000h<br /><br />
+	<b>Выход:</b><br/>
+	AX - Расширенный код ошибки<br />
+	BH - Класс ошибка<br />
+	BL - Рекомендуемое действие<br />
+	CH - Источник ошибки<br />
+	ES:DI указатель, для тех кодов ошибки, для которых необходимо<br /><br />
+	<b>Примечание:</b><br/>
+	CL, DX, SI, BP, и DS могут быть изменены<br />
+	Возможные значения расширенного кода ошибки:
+<table border=1 width=100%>
+<tr><td>Код</td><td>Значение</td></tr><tr><td valign=top>
+00</td><td>Нет ошибки</td></tr><tr><td valign=top>
+01</td><td>Невеврный номер функции</td></tr><tr><td valign=top>
+02</td><td>Файл не найден</td></tr><tr><td valign=top>
+03</td><td>Путь не найден</td></tr><tr><td valign=top>
+04</td><td>Нет доступного HANDLE (слишком много открытых файлов)</td></tr><tr><td valign=top>
+05</td><td>Отказанно в доступе</td></tr><tr><td valign=top>
+06</td><td>Неверный HANDLE</td></tr><tr><td valign=top>
+07</td><td>MCB повреждён</td></tr><tr><td valign=top>
+08</td><td>Недостаточно памяти<br/>
+		Применительно к печати может обозночать, что очередь печать заполнена</td></tr><tr><td valign=top>
+09</td><td>Неверный адрес блока памяти</td></tr><tr><td valign=top>
+0Ah</td><td>Неверное окружение</td></tr><tr><td valign=top>
+0Bh</td><td>Неверный формат</td></tr><tr><td valign=top>
+0Ch</td><td>Неверный код доступа<br/>
+		Применительно к файлам означает, что строка с полным именем фала слишком длинная</td></tr><tr><td valign=top>
+0Dh</td><td>Неверная дата или невереные данные - хрен поймёт этих англоязычных</td></tr><tr><td valign=top>
+0Eh</td><td>резерв</td></tr><tr><td valign=top>
+0Fh</td><td>Неверный диск</td><tr><td valign=top>
+10h</td><td>Нельзя удалить текущую директорию</td></tr><tr><td valign=top>
+11h</td><td>Не то же самое устройство</td></tr><tr><td valign=top>
+12h</td><td>Файлов больше нет</td></tr><tr><td valign=top>
+13h</td><td>Диск защищён от записи</td></tr><tr><td valign=top>
+14h</td><td>Задан неизвестный идентификатор устройства</td></tr><tr><td valign=top>
+15h</td><td>Устройство не готово</td></tr><tr><td valign=top>
+16h</td><td>Неизвестная команда</td></tr><tr><td valign=top>
+17h</td><td>Ошибка данных (Ошибка CRC)</td></tr><tr><td valign=top>
+18h</td><td>Неверный размер структуры</td></tr><tr><td valign=top>
+19h</td><td>Ошибка поиска</td></tr><tr><td valign=top>
+1Ah</td><td>Неизвестный тип диска</td></tr><tr><td valign=top>
+1Bh</td><td>Сектор не найден</td></tr><tr><td valign=top>
+1Ch</td><td>Нет бумаги в принтере</td></tr><tr><td valign=top>
+1Dh</td><td>Ошибка записи</td></tr><tr><td valign=top>
+1Eh</td><td>Ошибка чтения</td></tr><tr><td valign=top>
+1Fh</td><td>Сбой</td></tr><tr><td valign=top>
+20h</td><td>Ошибка общего доступа</td></tr><tr><td valign=top>
+21h</td><td>Ошибка блокировки</td></tr><tr><td valign=top>
+22h</td><td>Неправильная замена диска</td></tr><tr><td valign=top>
+23h</td><td>FCB не доступен (слишком много FCB уже выделенно)</td></tr><tr><td valign=top>
+24h</td><td>Общий буфер (sharing buffer) переполнен</td></tr><tr><td valign=top>
+25h</td><td>Неподходящая кодовая страница</td></tr><tr><td valign=top>
+26h</td><td>Немогу завершить операцию с файлом</td></tr><tr><td valign=top>
+27h</td><td>Недостаточно места на диске</td></tr><tr><td valign=top>
+28h - 31h</td><td>Резерв</td></tr><tr><td valign=top>
+32h</td><td>Сетевой запрос не поддерживается</td></tr><tr><td valign=top>
+33h</td><td>Удалённый (remote) компьютер нас не слушает</td></tr><tr><td valign=top>
+34h</td><td>Такое сетевое имя уже существует</td></tr><tr><td valign=top>
+35h</td><td>Не найдено сетевое имя</td></tr><tr><td valign=top>
+36h</td><td>Сеть занята</td></tr><tr><td valign=top>
+37h</td><td>Сетеве устройство больше не существует</td></tr><tr><td valign=top>
+38h</td><td>network BIOS command limit exceeded</td></tr><tr><td valign=top>
+39h</td><td>Аппаратная ошибка сетевого адаптера</td></tr><tr><td valign=top>
+3Ah</td><td>Неверный ответ из сети</td></tr><tr><td valign=top>
+3Bh</td><td>Неожиданная ошибка сети</td></tr><tr><td valign=top>
+3Ch</td><td>На том конце провода несовместимый адаптер</td></tr><tr><td valign=top>
+3Dh</td><td>Очередь печать полная</td></tr><tr><td valign=top>
+3Eh</td><td>Очередь печать не полная</td></tr><tr><td valign=top>
+3Fh</td><td>Недостаточно места для печати</td></tr><tr><td valign=top>
+40h</td><td>Сетевое имя было удалено</td></tr><tr><td valign=top>
+41h</td><td>Сетевая ошибка доступа</td></tr><tr><td valign=top>
+42h</td><td>Неверный тип сетевого адаптера/устройства</td></tr><tr><td valign=top>
+43h</td><td>Сетевое не найдено</td></tr><tr><td valign=top>
+44h</td><td>network name limit exceeded</td></tr><tr><td valign=top>
+45h</td><td>network BIOS session limit exceeded</td></tr><tr><td valign=top>
+46h</td><td>Временно приостановленно</td></tr><tr><td valign=top>
+47h</td><td>Сетевой запрос отвергнут</td></tr><tr><td valign=top>
+48h</td><td>Сетевая печать или переадресация диска приостановленна</td></tr><tr><td valign=top>
+49h</td><td>Сетевое ПО не установленно</td></tr><tr><td valign=top>
+4Ah</td><td>Неожиданное закрытие адаптера</td></tr><tr><td valign=top>
+4Bh - 4Fh</td><td>Резерв</td></tr><tr><td valign=top>
+50h</td><td>Файл уже существует</td></tr><tr><td valign=top>
+</table>
 </body>
 </html>
  
