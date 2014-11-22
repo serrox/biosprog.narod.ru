@@ -8,7 +8,7 @@
 
 <url>
 	<loc>http://biosprog.narod.ru/index.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-12-22</lastmod>
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/index.htm</loc>
@@ -359,6 +359,10 @@
 	<lastmod>2014-10-21</lastmod>
 </url>
 <url>
+	<loc>http://biosprog.narod.ru/real/dos/int21/f59.htm</loc>
+	<lastmod>2014-12-22</lastmod>
+</url>
+<url>
 	<loc>http://biosprog.narod.ru/real/dos/int21/f5a.htm</loc>
 	<lastmod>2013-10-16</lastmod>
 </url>
@@ -500,6 +504,6 @@
 </url>
 <url>
 	<loc>http://biosprog.narod.ru/real/dos/int2f.htm</loc>
-	<lastmod>2013-10-16</lastmod>
+	<lastmod>2014-12-22</lastmod>
 </url>
 </urlset>
