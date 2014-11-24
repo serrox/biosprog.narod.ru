@@ -34,13 +34,69 @@
 	<a href=../../../index.htm>Главная</a> - <a href=../../index.htm> Реальный режим </a> - <a href=../ints.htm>Прерывания DOS</a> - <a href=index.htm>INT 21h: Сервис DOS.</a> - <b>Функция 30h: Дать номер версии DOS.</b><br />
 	<h2>Функция 30h: Дать номер версии DOS.</h2>
 	<b>Вход:</b><br />
-	AH=30h<br /><br />
+	AH=30h<br />
+	AL - вернить производителя или флаг версии (DOS 5.0+ , более рание версии всегда возвращают производителя)<br /><br />
 	<b>Выход:</b><br />
 	AL = старший номер версии<br />
 	AH = младший номер версии<br />
-	BX,CX = 0 (DOS 3.0+)<br /><br />
+	BL,CX = Серийный номер (BL - старшая часть)<br />
+	Для AL == 0:<br />
+	&nbsp;&nbsp;BH - Производитель:<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00 - IBM (Novell DOS, Caldera OpenDOS, DR-OpenDOS, and DR-DOS 7.02+ так же возвращают ноль в этом регистре)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01 - Compaq<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;02 - MS Packaged Product<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;04 - AT&amp;T<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;05 - Zenith Data Sysytems (Zenith Electronics, Zenith Electronics)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;06 - Hewlett-Packard<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;07 - Zenith Data Systems (ZDS, Groupe Bull) DOS 5.0+<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;08 - Tandon<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;09 - AST (AST Europe Ltd.)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0Ah - Asem<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0Bh	- Hantarex<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0Ch - SystemsLine<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0Dh - Packard-Bell<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0Eh - Intercomp<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0Fh - Unibit<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10h - Unidata<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16h - DEC<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17h - Olivetti DOS<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;23h - Olivetti (may have been a typo, since 23 = 17h)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;28h - Texas Instruments<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;29h - Toshiba<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;33h - Novell (Windows/386)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;34h - MS Multimedia Systems (Windows/386)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;35h - MS Multimedia Systems (Windows/386)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4Dh - Hewlett-Packard (HP)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5Eh - RxDOS (Api Software & Mike Podanoffsky)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;66h - PhysTechSoft (PTS-DOS) probably Paragon Technology Systems Corporation PTS-DOS as well<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;99h - General Software's Embedded DOS<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CDh - Paragon Technology Systems Corporation ("Source DOS" S/DOS 1.0+)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EDh - зарезервированно для проектов, основанных на OpenDOS/DR-DOS<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EEh	- DR DOS<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EFh	- Novell DOS (версия 7 передаёт в этом регистре 0)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FDh - FreeDOS<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FFh - Microsoft, Phoenix (официально не определён)<br /><br />
+	Для AL == 1:
+	&nbsp;&nbsp;бит 3 регистра BH показывает, находится ли DOS в ROM (если установлен - то да), остальные биты зарезервированны
 	<b>Примечание:</b><br />
 	Для DOS 2.0 и выше. Для более ранних вресий в AL возвращается 0.<br />
-	DOS 2.x может изменить значение регистров BX и CX на случайноне. Для более новых версий гарантируется обнуление этих регистров.
+	Большинство версий DOS устанавливают серийный номер в ноль<br />
+	Реализация DOS в OS/2 1.x возвращает AL равный 0Ah<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 2.x : AL = 14h<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 3 : AL = 14h, AX = 1Eh<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 4 : AL = 14h, AH = 28h<br />
+	DOS 4.01 и 4.02 определяются как 4.0. Используйте функцию 87h что бы уточнить, какя именно это версия.<br />
+	IBM DOS версии 6.1 определяется как DOS 6.0. Используйте байт производителя, что бы узнать, что это за версия (IBM никогда не выпускала версию 6.0)<br />
+	Так же следует различать IBM DOS 7.0 и DOS 7.0 входящий в стостав Windows95.<br />
+	DOS 6.21 определяется как DOS 6.20<br />
+	Windows 95 сообщает версию DOS 7.0 , а Windows 95 OSR2 и OSR2.5 (также называемые в народе как Windows 96 и Window 97) сообщают версию 7.10<br />
+	DR DOS версий 5.0 и 6.0 сообщают версию 3.31.<br />
+	Novell DOS 7, OpenDOS 7.01, DR-OpenDOS 7.02, DR-DOS 7.02, DR-DOS 7.03 определя.тся как IBM DOS 6.0 ( т.е. соответству.т версии IBM DOS 6.10). DR DOS можно отличить от IBM PC-DOS с помощью подфункции 52р функции 44р.<br />
+	Heiko Goeman's Advanced WinDOS 2.10/2.11/2.21 определяется как IBM DOS 5.0<br />
+	CCI Multiuser DOS  вплоть до версии "CCI Multiuser DOS 7.22 Gold" определяются как DOS 3.31<br />
+	DR DOS 3.31, 3.32, 3.33, 3.34, 3.35, 3.40, 3.41, 5.0, 6.0 и DR PalmDOS/NetWare PalmDOS 1.0 так же определяются как DOS 3.31<br />
+	DR DOS версий "Panther" BETA 1 и "StarTrek" определяются как DOS 5.0<br />
+	MS-DOS 3.30 и Compaq MS-DOS 3.31 ошибочно возвращают ноль в байте изготовителя.<br />
+	Номер версии, возвращаемый этой функции может быть изменён программой SETVER, входящей в стандартный комплект поставки многих дистрибутивов DOS. Для уточнения номера версии рекомендуется использовать подфункцию 6 функции 33h.<br />
 </body>
 </html>
