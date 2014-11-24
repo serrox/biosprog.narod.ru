@@ -75,15 +75,15 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EEh	- DR DOS<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EFh	- Novell DOS (версия 7 передаёт в этом регистре 0)<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FDh - FreeDOS<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FFh - Microsoft, Phoenix (официально не определён)<br /><br />
-	Для AL == 1:
-	&nbsp;&nbsp;бит 3 регистра BH показывает, находится ли DOS в ROM (если установлен - то да), остальные биты зарезервированны
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FFh - Microsoft, Phoenix (официально не определён)<br />
+	Для AL == 1:<br />
+	&nbsp;&nbsp;бит 3 регистра BH показывает, находится ли DOS в ROM (если установлен - то да), остальные биты зарезервированны<br /><br />
 	<b>Примечание:</b><br />
 	Для DOS 2.0 и выше. Для более ранних вресий в AL возвращается 0.<br />
 	Большинство версий DOS устанавливают серийный номер в ноль<br />
 	Реализация DOS в OS/2 1.x возвращает AL равный 0Ah<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 2.x : AL = 14h<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 3 : AL = 14h, AX = 1Eh<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 3 : AL = 14h, AH = 1Eh<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 4 : AL = 14h, AH = 28h<br />
 	DOS 4.01 и 4.02 определяются как 4.0. Используйте функцию 87h что бы уточнить, какя именно это версия.<br />
 	IBM DOS версии 6.1 определяется как DOS 6.0. Используйте байт производителя, что бы узнать, что это за версия (IBM никогда не выпускала версию 6.0)<br />
