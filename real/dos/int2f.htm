@@ -59,7 +59,8 @@
 	<li><a href="#print">API Печати для DOS 3.0+</a></li>
 	<li><a href="#err2str">Строка сообщения об ошибке DOS 3.0+</a></li>
 	<li><a href="#assign">Резидентная часть комманды ASSIGN DOS 3.0+</a></li>
-	<li><a href="#assign">Резидентная часть комманды SHARE DOS 3.0+</a></li>
+	<li><a href="#device">Резидентная часть драйвера DEVICE.SYS</a></li>
+	<li><a href="#share">Резидентная часть комманды SHARE DOS 3.0+</a></li>
 </ul>
 <br />
 <a name=print><h3>API Печати для DOS 3.0+</h3></a><br />
@@ -100,7 +101,7 @@
 	<b>Выход:</b><br/>
 	Если установлен флаг CF, то произошла ошибка, и AX содержит <a href="#code">код ошибки</a><br />
 	Эта функция вызывается для возобновления печати после выполнения <a href="#4">функции 4</a></td></tr><tr><td valign=top>
-  6</td><td>Узнать используемый принтер<font color=red><b>DOS 3.3+</b></font><br /><br />
+  6</td><td>Узнать состояние принтера<font color=red><b>DOS 3.3+</b></font><br /><br />
 	<b>Выход:</b><br/>
 	Если флаг CF установлен:<br/>
 	&nbsp;&nbsp;&nbsp;&nbsp;В очереди печати есть файлы<br/>
@@ -146,7 +147,7 @@
 	Если произошла ошибка, то установлен флаг CF<br /><br />
 	<b>Примечание:</b><br/>
 	Если в AL переданн 0 то функция работает как обычная функция проверки наличия резидентной программы, при этом в BX может содержаться мусор,а флаг CF будет сброшен.<br/>
-	При неудачном выполнении функцции могут быть разрущены значения в регистрах AX,ES,DI а так же изменены значения других флагов<br/>
+	При неудачном выполнении функцции могут быть разрушены значения в регистрах AX,ES,DI а так же изменены значения других флагов<br/>
 <br />
 <a name="assign"><h3>Резидентная часть комманды ASSIGN DOS 3.0+</h3></a><br />
 В AH передаётся 6<br />
@@ -161,6 +162,117 @@
 	<b>Выход:</b><br/>
 	ES - сегмент, в котором сохранено состояние сервиса ASSIGN</br>
 	По адресу ES:103h расположена 26-байтная таблица, в которой записано какой диск соответствует каждой букве диска. К примеру, если по адресу ES:103h записанно 1, то букве диска A: соответствует диск 1,  а если по адресу ES:11Ch записанно 83h, то букве даска Z: соответствует диск 83h.</td></tr>
+</table>
+<br />
+<a name="device"><h3>Резидентная часть драйвера DEVICE.SYS</h3></a><br />
+В AH передаётся 08h
+<table border=1 width=100%><tr><td>AL</td><td>подфункция</td></tr><tr><td valign=top>
+  0</td><td>Проверить наличие<br /><br/>
+	<b>Выход:</b><br/>
+	AL == 00h =&gt; не установлен, можно устанавливать <br />
+	AL == 01h =&gt; не установлен, нельзя устанавливать <br />
+	AL == FFh =&gt; установлен</td></tr><tr><td valign=top>
+  1</td><td/>Добавить блочное устройство<br /><br/>
+	<b>Вход:</b><br/>
+	DS:SI - <a href="#device_conftable">таблица параметров устройства.</a><br/><br/>
+	<b>Выход:</b><br/>
+	AX, BX, SI и ES разрушенны.<br /><br />
+	<b>Примечание:</b><br/>
+	Эта функция добавляет переданную таблицу в список известных системе блочных устройств.</td></tr><tr><td valign=top>
+  2</td><td/>Выполнить запрос к драйверу устройства<br /><br/>
+	<b>Вход:</b><br/>
+	ES:BX - запрос.<br/><br/>
+	<b>Выход:</b><br/>
+	В стеке оставленно лишнее слово.<br /><br />
+	<b>Примечание:</b><br/>
+	DOS 3.2 выполняет эту функцию при AL от 2 до F7h, в DOS 4+ для AL=3 определена другая функция.</td></tr><tr><td valign=top>
+  3</td><td/>Получить таблицы параметров устройств DOS 4+<br /><br/>
+	<b>Выход:</b><br/>
+	DS:SI - <a href="#device_conftable">первая таблица в списке.</a></td></tr>
+</table><br/>
+<a name="device_conftable">Таблица параметров устройств</a><br/>
+Версия для DOS 3.30
+<table border=1 width=100%><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
+  00h</td><td valign=top>DWORD</td><td>Указатель на следующую таблицу (либо 0xFFFFh, если это последняя таблица)</td></tr><tr><td valign=top>
+  04h</td><td valign=top>BYTE</td><td>Номер устройства BIOS</td></tr><tr><td valign=top>
+  05h</td><td valign=top>BYTE</td><td>Номер устройства DOS (0 = A: ; 1 = B: ; ...)</td></tr><tr><td valign=top>
+  06h</td><td valign=top>19*BYTE</td><td>BPB (cм. функцию 53h прерывания 21h)</td></tr><tr><td valign=top>
+  19h</td><td valign=top>BYTE</td><td>Флаги :<br/>
+                                      Бит 6 - если установлен, то используется FAT16, иначе - FAT12<br/>
+									  Остальные биты не определены
+  </td></tr><tr><td valign=top>
+  1Ah</td><td valign=top>WORD</td><td>Счётчик ссылок на диск</td></tr><tr><td valign=top>
+  1Ch</td><td valign=top>11*BYTE</td><td>Имя диска или "NO NAME&nbsp;&nbsp;&nbsp;&nbsp;", если оно не заданно.<br/>
+                                         Для несъёмных дисков всегда "NO NAME&nbsp;&nbsp;&nbsp;&nbsp;"
+  </td></tr><tr><td valign=top>
+  27h</td><td valign=top>BYTE</td><td>Ноль</td></tr><tr><td valign=top>
+  28h</td><td valign=top>BYTE</td><td>Тип устройства (см. функцию 44h подфункцию 0Dh прерывания 21h)</td></tr><tr><td valign=top>
+  29h</td><td valign=top>WORD</td><td>Флаги:<br/>
+                                      Бит 0 - если установлен, то это несъёмный диск<br/>
+									  Бит 1 - имеется сигнал смены носителя<br/>
+									  Бит 2 - текущий BPB залочен<br/>
+									  Бит 3 - все сектора на треке имеют одинаковый размер<br/>
+									  Бит 4 - Физучиское устройство имеет несколько логических устройств<br/>
+									  Бит 5 - current logical drive for shared physical drive (Что бы это означало?)<br/>
+									  Бит 6 - Обнаружена смена диска<br/>
+									  Бит 7 - Параметры устройства изменились (см. функцию 44h подфункцию 0Dh прерывания 21h)<br/>
+									  Бит 8 - Диск был отфрматирован (BPB изменилась)<br/>
+									  Бит 9 - флаг доступа (см. функцию 44h подфункцию 0Dh прерывания 21h)<br/>
+									  Остальные биты не определенны
+  </td></tr><tr><td valign=top>
+  2Bh</td><td valign=top>WORD</td><td>Кол-во цилиндров</td></tr><tr><td valign=top>
+  2Dh</td><td valign=top>19*BYTE</td><td>BPB для носителя с максимальной поддерживаемой ёмкостью</td></tr><tr><td valign=top>
+  40h</td><td valign=top>3*BYTE</td><td>Неизвестно</td></tr><tr><td valign=top>
+  43h</td><td valign=top>9*BYTE</td><td>Неизвестно (на MS-DOS 3.30 для несъёмных дисков записанно "NO NAME&nbsp;&nbsp;&nbsp;&nbsp;", в остальных случаях - нули)</td></tr><tr><td valign=top>
+  4Ch</td><td valign=top>BYTE</td><td>Последний считанный байт???</td></tr><tr><td valign=top>
+  4Dh</td><td valign=top>DWORD</td><td>Для дисков со съёмным носителем:<br/>
+                                       Время последнего обращения к диску (0xFFFFFFFF если никогда)<br/><br/>
+									   Для несъёмных дисков:<br/>
+									   Cлово по смещению 4Dh: - тип раздела (1 для расширенного и 0xFFFF для основного)<br/>
+									   Слово со смещению 4Fh: - номер цилинлра, на котором начинается раздел
+  </td></tr>  
+</table><br/>
+Версия для DOS 4+
+<table border=1 width=100%><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
+  00h</td><td valign=top>DWORD</td><td>Указатель на следующую таблицу (либо 0xFFFFh, если это последняя таблица)</td></tr><tr><td valign=top>
+  04h</td><td valign=top>BYTE</td><td>Номер устройства BIOS</td></tr><tr><td valign=top>
+  05h</td><td valign=top>BYTE</td><td>Номер устройства DOS (0 = A: ; 1 = B: ; ...)</td></tr><tr><td valign=top>
+  06h</td><td valign=top>25*BYTE</td><td>BPB (cм. функцию 53h прерывания 21h)</td></tr><tr><td valign=top>
+  1Fh</td><td valign=top>BYTE</td><td>Флаги :<br/>
+                                      Бит 6 - если установлен, то используется FAT16, иначе - FAT12<br/>
+                                      Бит 7 - неподдерживаемый диск (если установлен, то любая попытка дуступа приведёт к ошибке "Устройство не готово")<br/>
+									  Остальные биты не определены
+  </td></tr><tr><td valign=top>
+  20h</td><td valign=top>WORD</td><td>Счётчик ссылок на диск</td></tr><tr><td valign=top>
+  22h</td><td valign=top>BYTE</td><td>Тип устройства (см. функцию 44h подфункцию 0Dh прерывания 21h)</td></tr><tr><td valign=top>
+  23h</td><td valign=top>WORD</td><td>Флаги:<br/>
+                                      Бит 0 - если установлен, то это несъёмный диск<br/>
+									  Бит 1 - имеется сигнал смены носителя<br/>
+									  Бит 2 - текущий BPB залочен<br/>
+									  Бит 3 - все сектора на треке имеют одинаковый размер<br/>
+									  Бит 4 - Физучиское устройство имеет несколько логических устройств<br/>
+									  Бит 5 - current logical drive for shared physical drive (Что бы это означало?)<br/>
+									  Бит 6 - Обнаружена смена диска<br/>
+									  Бит 7 - Параметры устройства изменились (см. функцию 44h подфункцию 0Dh прерывания 21h)<br/>
+									  Бит 8 - Диск был отфрматирован (BPB изменилась)<br/>
+									  Бит 9 - флаг доступа (см. функцию 44h подфункцию 0Dh прерывания 21h)<br/>
+									  Остальные биты не определенны
+  </td></tr><tr><td valign=top>
+  25h</td><td valign=top>WORD</td><td>Кол-во цилиндров</td></tr><tr><td valign=top>
+  27h</td><td valign=top>25*BYTE</td><td>BPB для носителя с максимальной поддерживаемой ёмкостью</td></tr><tr><td valign=top>
+  40h</td><td valign=top>6*BYTE</td><td>Резерв</td></tr><tr><td valign=top>
+  46h</td><td valign=top>BYTE</td><td>Номер последнего считанного трека</td></tr><tr><td valign=top>
+  47h</td><td valign=top>DWORD</td><td>Для дисков со съёмным носителем:<br/>
+                                       Время последнего обращения к диску (0xFFFFFFFF если никогда)<br/><br/>
+									   Для несъёмных дисков:<br/>
+									   Cлово по смещению 4Dh: - тип раздела (1 для расширенного и 0xFFFF для основного). Для DOS 5+ всегда 1.<br/>
+									   Слово со смещению 4Fh: - номер цилинлра, на котором начинается раздел
+  </td></tr><tr><td valign=top>
+  4Bh</td><td valign=top>11*BYTE</td><td>Имя диска или "NO NAME&nbsp;&nbsp;&nbsp;&nbsp;", если оно не заданно.</td></tr><tr><td valign=top>
+  56h</td><td valign=top>BYTE</td><td>Ноль</td></tr><tr><td valign=top>
+  57h</td><td valign=top>DWORD</td><td>Серийный номер</td></tr><tr><td valign=top>
+  5Bh</td><td valign=top>8*BYTE</td><td>Файловая система, обычно "FAT16&nbsp;&nbsp;&nbsp;" или "FAT12&nbsp;&nbsp;&nbsp;"</td></tr><tr><td valign=top>
+  63h</td><td valign=top>BYTE</td><td>Ноль</td></tr>
 </table>
 <br />
 <a name="share"><h3>Резидентная часть комманды SHARE DOS 3.0+</h3></a><br />
