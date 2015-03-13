@@ -266,13 +266,55 @@
                                        Время последнего обращения к диску (0xFFFFFFFF если никогда)<br/><br/>
 									   Для несъёмных дисков:<br/>
 									   Cлово по смещению 4Dh: - тип раздела (1 для расширенного и 0xFFFF для основного). Для DOS 5+ всегда 1.<br/>
-									   Слово со смещению 4Fh: - номер цилинлра, на котором начинается раздел
+									   Слово со смещению 4Fh: - номер цилинлра, на котором начинается раздел (в DOS 4.0 для основного рзадела FFFFh)
   </td></tr><tr><td valign=top>
   4Bh</td><td valign=top>11*BYTE</td><td>Имя диска или "NO NAME&nbsp;&nbsp;&nbsp;&nbsp;", если оно не заданно.</td></tr><tr><td valign=top>
   56h</td><td valign=top>BYTE</td><td>Ноль</td></tr><tr><td valign=top>
   57h</td><td valign=top>DWORD</td><td>Серийный номер</td></tr><tr><td valign=top>
   5Bh</td><td valign=top>8*BYTE</td><td>Файловая система, обычно "FAT16&nbsp;&nbsp;&nbsp;" или "FAT12&nbsp;&nbsp;&nbsp;"</td></tr><tr><td valign=top>
   63h</td><td valign=top>BYTE</td><td>Ноль</td></tr>
+</table><br/>
+Версия для COMPAQ DOS 3.31
+<table border=1 width=100%><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
+  00h</td><td valign=top>DWORD</td><td>Указатель на следующую таблицу (либо 0xFFFFh, если это последняя таблица)</td></tr><tr><td valign=top>
+  04h</td><td valign=top>BYTE</td><td>Номер устройства BIOS</td></tr><tr><td valign=top>
+  05h</td><td valign=top>BYTE</td><td>Номер устройства DOS (0 = A: ; 1 = B: ; ...)</td></tr><tr><td valign=top>
+  06h</td><td valign=top>25*BYTE</td><td>BPB (cм. функцию 53h прерывания 21h)</td></tr><tr><td valign=top>
+  1Fh</td><td valign=top>6*BYTE</td><td>Резерв</td></tr><tr><td valign=top>
+  25h</td><td valign=top>BYTE</td><td>Флаги :<br/>
+                                      Бит 5 - предположительно, большой раздел<br/>
+                                      Бит 6 - если установлен, то используется FAT16, иначе - FAT12<br/>
+									  Остальные биты не определены
+  </td></tr><tr><td valign=top>
+  26h</td><td valign=top>WORD</td><td>Предположительно, счётчик ссылок на диск</td></tr><tr><td valign=top>
+  28h</td><td valign=top>11*BYTE</td><td>Имя диска или "NO NAME&nbsp;&nbsp;&nbsp;&nbsp;", если оно не заданно.<br/>
+                                         Для несъёмных дисков всегда "NO NAME&nbsp;&nbsp;&nbsp;&nbsp;"
+  </td></tr><tr><td valign=top>
+  33h</td><td valign=top>BYTE</td><td>Ноль</td></tr><tr><td valign=top>
+  34h</td><td valign=top>BYTE</td><td>Тип устройства (см. функцию 44h подфункцию 0Dh прерывания 21h)</td></tr><tr><td valign=top>
+  35h</td><td valign=top>WORD</td><td>Флаги:<br/>
+                                      Бит 0 - если установлен, то это несъёмный диск<br/>
+									  Бит 1 - имеется сигнал смены носителя<br/>
+									  Бит 2 - текущий BPB залочен<br/>
+									  Бит 3 - все сектора на треке имеют одинаковый размер<br/>
+									  Бит 4 - Физучиское устройство имеет несколько логических устройств<br/>
+									  Бит 5 - current logical drive for shared physical drive (Что бы это означало?)<br/>
+									  Бит 6 - Обнаружена смена диска<br/>
+									  Бит 7 - Параметры устройства изменились (см. функцию 44h подфункцию 0Dh прерывания 21h)<br/>
+									  Бит 8 - Диск был отфрматирован (BPB изменилась)<br/>
+									  Бит 9 - флаг доступа (см. функцию 44h подфункцию 0Dh прерывания 21h)<br/>
+									  Остальные биты не определенны
+  </td></tr><tr><td valign=top>
+  37h</td><td valign=top>WORD</td><td>Кол-во цилиндров</td></tr><tr><td valign=top>
+  39h</td><td valign=top>25*BYTE</td><td>BPB для носителя с максимальной поддерживаемой ёмкостью</td></tr><tr><td valign=top>
+  52h</td><td valign=top>6*BYTE</td><td>Резерв</td></tr><tr><td valign=top>
+  58h</td><td valign=top>BYTE</td><td>Последний считанный байт???</td></tr><tr><td valign=top>
+  59h</td><td valign=top>DWORD</td><td>Для дисков со съёмным носителем:<br/>
+                                       Время последнего обращения к диску (0xFFFFFFFF если никогда)<br/><br/>
+									   Для несъёмных дисков:<br/>
+									   Cлово по смещению 4Dh: - тип раздела (1 для расширенного и 0xFFFF для основного)<br/>
+									   Слово со смещению 4Fh: - номер цилинлра, на котором начинается раздел
+  </td></tr>
 </table>
 <br />
 <a name="share"><h3>Резидентная часть комманды SHARE DOS 3.0+</h3></a><br />
