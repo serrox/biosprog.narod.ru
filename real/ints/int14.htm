@@ -42,7 +42,7 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;10 - 7 бит<br />
 		&nbsp;&nbsp;&nbsp;&nbsp;11 - 8 бит<br />
 		&nbsp;&nbsp;бит 2 : стоп-бит 0=1 бит 1=2 бита<br />
-		&nbsp;&nbsp;биты 3 и 4 : проверка на чётность (00, 01 - без проверки; 11 - нечёт; 10 чёт)<br />
+		&nbsp;&nbsp;биты 3 и 4 : проверка на чётность (00, 10 - без проверки; 11 - нечёт; 01 чёт)<br />
 		&nbsp;&nbsp;биты 7-5 : скорость (БОД) :<br />
 		&nbsp;&nbsp;&nbsp;&nbsp;000 - 110<br />
 		&nbsp;&nbsp;&nbsp;&nbsp;001 - 150<br />
@@ -106,18 +106,23 @@
 		&nbsp;&nbsp;2 - 7 бит<br />
 		&nbsp;&nbsp;3 - 8 бит<br />
 		CL - скорость:<br />
-		&nbsp;&nbsp;0 - 110 бод<br />
-		&nbsp;&nbsp;1 - 150 бод<br />
-		&nbsp;&nbsp;2 - 300 бод<br />
-		&nbsp;&nbsp;3 - 600 бод<br />
-		&nbsp;&nbsp;4 - 1200 бод<br />
-		&nbsp;&nbsp;5 - 2400 бод<br />
-		&nbsp;&nbsp;6 - 6000 бод<br />
-		&nbsp;&nbsp;7 - 9600 бод<br />
-		&nbsp;&nbsp;8 - 19200 бод<br /><br />
+		&nbsp;&nbsp;0  - 110 бод<br />
+		&nbsp;&nbsp;1  - 150 бод<br />
+		&nbsp;&nbsp;2  - 300 бод<br />
+		&nbsp;&nbsp;3  - 600 бод<br />
+		&nbsp;&nbsp;4  - 1200 бод<br />
+		&nbsp;&nbsp;5  - 2400 бод<br />
+		&nbsp;&nbsp;6  - 6000 бод<br />
+		&nbsp;&nbsp;7  - 9600 бод<br />
+		&nbsp;&nbsp;8  - 19200 бод<br />
+		&nbsp;&nbsp;9  - 38400 бод<br />
+		&nbsp;&nbsp;Ah - 56000 бод<br />
+		&nbsp;&nbsp;Bh - 115000 бод<br /><br />
 		<b>Выход:</b><br/>
 		AL = состояние модема (см. функцию <a href=int14.htm#0>0</a>)<br />
-		AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)</td></tr><tr><td valign=top>
+		AH - состояние порта (см. функцию <a href=int14.htm#0>0</a>)<br/><br/>
+	    <b>Примечание:</b><br />
+		Спецификация Embedded BIOS 4.1 утверждает, что для случая, когда длинна слова равняется 5 бит в BL бля полутора стоп-бит на слово необходимо указывать значение 2</td></tr><tr><td valign=top>
 	5</td><td>Расширенное управление модемом<br />
 		<table width=100% border=1><tr><td>AL</td><td>Описание функции</td></tr><tr><td valign=top>
 		0</td><td>Прочитать управляющий порт модема<br /><br />
