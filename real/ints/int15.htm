@@ -267,7 +267,7 @@
 	формат таблицы:<br />
 	<table border=1 width=100%>
 	<tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
-	 00h</td><td>2 байта</td><td>размер таблицы</td></tr><tr><td valign=top>
+	 00h</td><td>2 байта</td><td>размер таблицы за исключением этого поля</td></tr><tr><td valign=top>
 	 02h</td><td>1 байт</td><td>код модели компьютера</td></tr><tr><td valign=top>
 	 03h</td><td>1 байт</td><td>суб-код модели компьютера</td></tr><tr><td valign=top>
 	 04h</td><td>1 байт</td><td>номер ревизии BIOS минус 1</td></tr><tr><td valign=top>
@@ -279,9 +279,9 @@
 	    2</td><td>Биос имеет дополнительную область данных (EBDA)</td></tr><tr><td valign=top>
 	    3</td><td>Функция 41h прерывания 15h поддерживается</td></tr><tr><td valign=top>
 	    4</td><td>Прерывание 09h вызывает <a href="#4F">функцию 4Fh прерывания 15h</a></td></tr><tr><td valign=top>
-	    5</td><td>Присутствуют часы реального времени</td></tr><tr><td valign=top>
-	    6</td><td>Установлен второй контроллер прерывания 8259</td></tr><tr><td valign=top>
-	    7</td><td>Третий канал- DMA занят BIOS</td></tr>
+	    5</td><td>Присутствуют часы реального времени (RTC)</td></tr><tr><td valign=top>
+	    6</td><td>Установлен второй контроллер прерывания 8259 (в режиме каскадирования через IRQ 2, т.е. стандартная конфигурация)</td></tr><tr><td valign=top>
+	    7</td><td>Третий канал DMA занят BIOS</td></tr>
 	    </table>
 	 </td></tr><tr><td valign=top>
 	 06h</td><td>1 байт</td><td>
