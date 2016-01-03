@@ -31,9 +31,8 @@
 </script>
 <noscript><div><img src="//mc.yandex.ru/watch/2269369" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 16h: Ввод/вывод клавиатуры.</b><br />
-	<h2>INT 16h: Ввод/вывод клавиатуры.</h2>
-<!-- добавить ф-и Fxh для работы с CPU. Есть в RBIL и в Спецификации Embedded BIOS-->
+	<a href=../../index.htm>Главная</a> - <a href=../index.htm> Реальный режим </a> - <a href=int.htm>Прерывания Bios</a> - <b>INT 16h: Ввод/вывод клавиатуры, управление процессором и кэшем.</b><br />
+	<h2>INT 16h: Ввод/вывод клавиатуры, управление процессором и кэшем.</h2>
 <table border=1 width=100%><tr><td>AH</td><td>Функция</td></tr>
 <tr><td valign=top>0h</td><td>Читать буфер клавиатуры (84-клавишная клавиатура)<br /><br/>
 	<b>Выход:</b><br/>
@@ -255,7 +254,63 @@
   20h</td><td> Аналагично <a href=int16.htm#10>функции 10h</a>, но для 122-х клавишной клавиатуры</td></tr><tr><td valign=top>
   21h</td><td> Аналагично <a href=int16.htm#11>функции 11h</a>, но для 122-х клавишной клавиатуры</td></tr><tr><td valign=top>
   22h</td><td> Аналагично <a href=int16.htm#12>функции 12h</a>, но для 122-х клавишной клавиатуры</td></tr><tr><td valign=top>
-  22h</td><td>Добавить символ в конец буфера клавиатуры<br /><br />
+  F0h</td><td>Установить скорость процессора<br /><br />
+	<b>Вход:</b><br />
+	AL = 00 - низкая<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 01 - средняя<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 02 - высокая<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 03 - использовать значение джампера на материнской плате<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 08 - высокая, но с понижением при обращении к дискетному приводу<br /><br />
+	<b>Примечания:</b><br/>
+	<b><font color=red>Поддерживается не всеми BIOS</font></b><br />
+	как правило, реализованны только значения 00, 01 и 02</td></tr><tr><td valign=top>
+  F1h</td><td>Узнать скорость процессора<br /><br />
+	<b>Выход:</b><br />
+	AL = 00 - низкая<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 01 - средняя<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 02 - высокая<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 03 - использовать значение джампера на материнской плате<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 08 - высокая, но с понижением при обращении к дискетному приводу<br /><br />
+	<b>Примечания:</b><br/>
+	<b><font color=red>Поддерживается не всеми BIOS</font></b><br />
+	как правило, реализованны только значения 00, 01 и 02</td></tr><tr><td valign=top>
+  F4h</td><td>Упраление кэшем<br /><br />
+	<table border=1 width=100%><tr><td>AL</td><td>Подфункция</td></tr><tr><td valign=top>
+	  00</td><td>Узнать статус кэша<br /><br />
+		<b>Выход:</b><br />
+		AH = E2h<br />
+		AL:<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 00 - кэш отсутствует<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 01 - кэш включён<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 02 - кэш выключен<br />
+		CX:<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; биты 0 - 14 : размер кэша в Кб<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; бит 15 : если установлен, то размер верный<br />
+		DH:<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; бит 0 : если установлен, то используется стратегия write-back, иначе write-through<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; биты 1 - 6 : резерв<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; бит 7 : если установлен, то данные верны<br />
+		DL:<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; бит 0 : если установлен, то кэш двухрядный ассоциативный, иначе используется direct mapping<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; биты 1 - 6 : резерв<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; бит 7 : если установлен, то данные верны<br /><br />
+		<b>Примечания:</b><br/>
+		<b><font color=red>Поддерживается не всеми BIOS</font></b><br />
+		AH не всегда содержит E2h</td></tr><tr><td valign=top>
+	  01</td><td>Включить кэш<br /><br />
+		<b>Выход:</b><br />
+		AH = E2h<br /><br />
+		<b>Примечания:</b><br/>
+		<b><font color=red>Поддерживается не всеми BIOS</font></b><br />
+		AH не всегда содержит E2h</td></tr><tr><td valign=top>
+	  01</td><td>Отключить кэш<br /><br />
+		<b>Выход:</b><br />
+		AH = E2h<br /><br />
+		<b>Примечания:</b><br/>
+		<b><font color=red>Поддерживается не всеми BIOS</font></b><br />
+		AH не всегда содержит E2h</td></tr></table>
+	</td></tr><tr><td valign=top>
+  FFh</td><td>Добавить символ в конец буфера клавиатуры<br /><br />
 	<b>Вход:</b><br />
 	DX - скан-код клавиши<br /><br />
 	<b>Выход:</b><br />
