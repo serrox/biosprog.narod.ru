@@ -35,7 +35,7 @@
 	<h2>Функция 30h: Дать номер версии DOS.</h2>
 	<b>Вход:</b><br />
 	AH=30h<br />
-	AL - вернить производителя или флаг версии (DOS 5.0+ , более рание версии всегда возвращают производителя)<br /><br />
+	AL - вернуть производителя или флаг версии (DOS 5.0+ , более рание версии всегда возвращают производителя)<br /><br />
 	<b>Выход:</b><br />
 	AL = старший номер версии<br />
 	AH = младший номер версии<br />
@@ -82,16 +82,16 @@
 	Для DOS 2.0 и выше. Для более ранних вресий в AL возвращается 0.<br />
 	Большинство версий DOS устанавливают серийный номер в ноль<br />
 	Реализация DOS в OS/2 1.x возвращает AL равный 0Ah<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 2.x : AL = 14h<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 3 : AL = 14h, AH = 1Eh<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 4 : AL = 14h, AH = 28h<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OS/2 2.x : AL = 14h<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 3 : AL = 14h, AH = 1Eh<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OS/2 Warp 4 : AL = 14h, AH = 28h<br />
 	DOS 4.01 и 4.02 определяются как 4.0. Используйте функцию 87h что бы уточнить, какя именно это версия.<br />
 	IBM DOS версии 6.1 определяется как DOS 6.0. Используйте байт производителя, что бы узнать, что это за версия (IBM никогда не выпускала версию 6.0)<br />
 	Так же следует различать IBM DOS 7.0 и DOS 7.0 входящий в стостав Windows95.<br />
 	DOS 6.21 определяется как DOS 6.20<br />
 	Windows 95 сообщает версию DOS 7.0 , а Windows 95 OSR2 и OSR2.5 (также называемые в народе как Windows 96 и Window 97) сообщают версию 7.10<br />
 	DR DOS версий 5.0 и 6.0 сообщают версию 3.31.<br />
-	Novell DOS 7, OpenDOS 7.01, DR-OpenDOS 7.02, DR-DOS 7.02, DR-DOS 7.03 определя.тся как IBM DOS 6.0 ( т.е. соответству.т версии IBM DOS 6.10). DR DOS можно отличить от IBM PC-DOS с помощью подфункции 52р функции 44р.<br />
+	Novell DOS 7, OpenDOS 7.01, DR-OpenDOS 7.02, DR-DOS 7.02, DR-DOS 7.03 определя.тся как IBM DOS 6.0 ( т.е. соответствует версии IBM DOS 6.10). DR DOS можно отличить от IBM PC-DOS с помощью подфункции 52h функции 44h.<br />
 	Heiko Goeman's Advanced WinDOS 2.10/2.11/2.21 определяется как IBM DOS 5.0<br />
 	CCI Multiuser DOS  вплоть до версии "CCI Multiuser DOS 7.22 Gold" определяются как DOS 3.31<br />
 	DR DOS 3.31, 3.32, 3.33, 3.34, 3.35, 3.40, 3.41, 5.0, 6.0 и DR PalmDOS/NetWare PalmDOS 1.0 так же определяются как DOS 3.31<br />
