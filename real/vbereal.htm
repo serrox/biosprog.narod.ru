@@ -33,146 +33,82 @@
 <!-- /Yandex.Metrika counter -->
 	<a href=../index.htm>Главная</a> - <a href=index.htm>Реальный режим</a> - <b> Использование VBE в реальном режиме</b><br />
 	<h2>Использование VBE 3.0</h2>
-    <b><font color=red>Для VBE отведена функция 4Fh прерывания int 13h.</font></b><br />
+    <b><font color=red>Для VBE отведена <a href="int10.htm#4f">функция 4Fh прерывания int 10h</a>.</font></b><br />
 <b><font color=red>Необходима VESA BIOS Extension-совметимая видеокарточка и 
     совместимый BIOS (изготовленый после 10 января 1986)</font></b><br />
     Вот её подфункции:<br />
 <table border=1 width=100%><tr><td>AL</td><td align=center>Функция</td></tr><tr><td valign=top>
-    00</td><td>Информация о VBE<br />
-        Вход: ES:DI - Указывает на структуру 512 байт<br />
-        Выход: AL=4f (иначе - VBE отсутствует)<br />
-        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;AH=0 (иначе - VBE отсутствует)<br />
-        &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;заполненая структура, по адресу, переданному на входе:<br />
-<table width=100% border=1><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
-    00h</td><td valign="top">4 байта</td><td>ASCII строка &quot;VESA&quot; или &quot;VBE2&quot;<br /> если её нет, то VBE не 
-    поддерживается.</td></tr><tr><td valign=top>
-    04h</td><td valign="top">2 байта</td><td>Номер версии (0100 =&gt; 1.0)(если ниже, чем 0100, то VBE отсутствует)</td></tr><tr><td valign=top>
-    06h</td><td valign="top">4 байта</td><td>Указатель на OEM-строку</td></tr><tr><td valign=top>
-    0Ah</td><td valign="top">4 байта</td><td>Возможности контроллера:<br />
-    бит 0: ==0 6-битный ЦАП иначе 8-битный <br />
-    бит 1: ==0 VGA-местимый контроллер , иначе - не совместим<br />
-    бит 2: ==1 при работе с большими блоками информации в RAMDAC следует использовать бит очистки функции 09h<br />
-    прочие биты - в резерве.</td></tr><tr><td valign=top>
-    0Eh</td><td valign="top">4 байта</td><td>Указатель на список видеорежимов</td></tr><tr><td valign=top>
-    12h</td><td valign="top">2 байта</td><td>число блоков видеопамяти по 64 КБ в каждом</td></tr><tr><td valign=top>
-    14h</td><td valign="top">2 байта</td><td>Ревизия VBE<br /><font color=red>VBE2 или выше</font></td></tr><tr><td valign=top>
-    16h</td><td valign="top">4 байта</td><td>Указатель на строку названия фирмы-изготовителя.<br /><font color=red>VBE2 или выше</font></td></tr><tr><td valign=top>
-    1Ah</td><td valign="top">4 байта</td><td>Указатель на строку названия изделия<br /><font color=red>VBE2 или выше</font></td></tr><tr><td valign=top>
-    1Eh</td><td valign="top">4 байта</td><td>Указатель на строку версии<br /><font color=red>VBE2 или выше</font></td></tr><tr><td valign=top>
-    22h</td><td valign="top">222 байта</td><td>РЕЗЕРВ</td></tr><tr><td valign=top>
-    100h</td><td valign="top">256 байт</td><td>Область OEM-данных<br />Куда-то сюда ссылаются все указатели это структуры</td></tr>
-</table>
-</td></tr><td valign=top>
-01h</td><td>Получить информацию о видео-параметрах</br>
-Вход: CX - Номер видеорежима (см. <a href=#2>ф-ю 2</a>)<br />
-&ensp;&ensp;&ensp;&ensp;&ensp;ES:DI - Указывает на структуру в 256 байт<br />
-Выход: AH и AL согласно <a href=#rule>общему правилу возврата значений значений VBE</a><br />
-&ensp;&ensp;&ensp;&ensp;&ensp;Заполненая структура, по адресу, переданном на входе:<br />
-<table width=100% border=1><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
-00h</td><td valign="top">2 байта</td><td>
-Аттрибут:
-    <table border=1 width=100%><tr><td>бит</td><td>значение</td></tr><tr><td valign=top>
-    0</td><td>==0 : режим не поддерживается<br />==1 : режим поддерживается</td></tr><tr><td valign=top>
-    1</td><td>=1</td></tr><tr><td valign=top>
-    2</td><td>==0 : функции TTY не поддерживаются<br />==1 : функции TTY поддерживаются</td></tr><tr><td valign=top>
-    3</td><td>==0 : монохромный режим<br />==1 : цветной режим</td></tr><tr><td valign=top>
-    4</td><td>==0 : текстовый режим<br />==1 : графический режим</td></tr><tr><td valign=top>
-    5</td><td>==0 : VGA-совместимый режим<br />==1 : VGA-несовместимый  режим</td></tr><tr><td valign=top>
-    6<span lang="en-us">-7</span></td><td>==0<span lang="en-us">0</span> : поддерживается<span 
-                lang="en-us"> </span><span lang="ru">только</span> режим оконной(страничной) адресации видеопамяти<br />==1<span 
-                lang="en-us">0</span> : не поддерживается<br />
-            <span lang="en-us">==01 : поддерживается </span><span lang="ru">р</span><span 
-                lang="en-us">ежим</span><span lang="ru">ы</span><span lang="en-us"> оконной(страничной)
-            </span><span lang="ru">и линейной</span><span lang="en-us"> адресации видеопамяти<br />
-            ==11 : поддерживается </span><span lang="ru">только</span><span lang="en-us"> 
-            режим линейной адресации видеопамяти</span></td></tr><tr><td valign=top>
-            <span lang="en-us">8</span></td><td><span lang="ru">Режим двойного сканирования<br />
-                ==0 не поддерживается</span><span lang="en-us"><br />
-                ==1 </span><span lang="ru">поддерживается</span></td></tr><tr><td valign=top>
-            <span lang="ru">9</span></td><td><span lang="ru">Черезстрочная развёртка<br />
-                                                                ==0 не поподдерживается<br />
-                                                                ==1 поддерживается</span></td></tr><tr><td valign=top>
-                                                            <span lang="ru">10</span></td><td><span lang="ru">Тройная аппаратная буферизация<br />
-            ==0 не поддерживается<br />
-            ==1 поддерживается</span></td></tr><tr><td valign=top>
-            <span lang="ru">11</span></td><td><span lang="ru">Аппаратная поддержка 
-                стереоскопичекского дисплея<br />
-                ==0 отсутствует<br />
-                ==1 присутствует</span></td></tr><tr><td valign=top>
-            <span lang="ru">12</span></td><td><span lang="ru">Двойной стартовый адрес<br />
-                ==0 поддерживается<br />
-                ==1 не поддерживается</span></td></tr><tr><td valign=top>
-            <span lang="ru">13</span>-15</td><td>РЕЗЕРВ</td></tr>
-    </table>
-</td></tr><tr><td valign=top>
-02h</td><td valign="top">1 байт</td><td>
-Аттрибуты окна А
-    <table border=1 width=100%><tr><td>бит</td><td>значение</td></tr><tr><td valign=top>
-    0</td><td>==0 : окно неперемещаемо<br />==1 : окно перемещаемо</td></tr><tr><td valign=top>
-    1</td><td>==0 : чтение разрешено<br />==1 : чтение запрещено</td></tr><tr><td valign=top>
-    2</td><td>==0 : запись разрешена<br />==1 : запись запрещена</td></tr><tr><td valign=top>
-    3-7</td><td>РЕЗЕРВ</td></tr>
-    </table>
-</td></tr><tr><td valign=top>
-03h</td><td valign="top">1 байт</td><td>
-Аттрибуты окна В
-    <table border=1 width=100%><tr><td>бит</td><td>значение</td></tr><tr><td valign=top>
-    0</td><td>==0 : окно неперемещаемо<br />==1 : окно перемещаемо</td></tr><tr><td valign=top>
-    1</td><td>==0 : чтение разрешено<br />==1 : чтение запрещено</td></tr><tr><td valign=top>
-    2</td><td>==0 : запись разрешена<br />==1 : запись запрещена</td></tr><tr><td valign=top>
-    3-7</td><td>РЕЗЕРВ</td></tr>
-    </table>
-</td></tr><tr><td valign=top>
-04h</td><td valign="top">2 байта</td><td>
-Наименьшая величина в КБ, на которую можно переместить окно.
-</td></tr><tr><td valign=top>
-06h</td><td valign="top">2 байта</td><td>
-Размер окна в КБ
-</td></tr><tr><td valign=top>
-08h</td><td valign="top">2 байта</td><td>
-Начальный сегмент окна А в RAM
-</td></tr><tr><td valign=top>
-0Ah</td><td valign="top">2 байта</td><td>
-Начальный сегмент окна В в RAM
-</td></tr><tr><td valign=top>
-0Ch</td><td valign="top">4 байта</td><td>
-Указатель на функцию позиционирования окна.
-</td></tr><tr><td valign=top>
-10h</td><td valign="top">2 байта</td><td>
-Количество байт на строку развёртки
-</td></tr><tr><td valign=top>
-12h</td><td valign="top">2 байта</td><td>
-Разрешение экрана по горизонтали.<br />
-для графических режимов - в пикселах.<br />
-для текстовых режимов - в знакоместах.<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-14h</td><td valign="top">2 байта</td><td>
-Разрешение экрана по вертикали.<br />
-для графических режимов - в пикселах.<br />
-для текстовых режимов - в знакоместах.<br />
-<b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-16h</td><td valign="top">1 байт</td><td>
-Ширина знакоместа в пикселах<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-17h</td><td valign="top">1 байт</td><td>
-Высота знакоместа в пикселах<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-18h</td><td valign="top">1 байт</td><td>
-Число плоскостей памяти<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-19h</td><td valign="top">1 байт</td><td>
-Бит на пиксел<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-1Ah</td><td valign="top">1 байт</td><td>
-Количество банков памяти<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-1Bh</td><td valign="top">1 байт</td><td>
+	00</td><td>Информация о VBE<br/><br/>
+		<b>Вход:</b><br/>
+		ES:DI - Указывает на структуру 512 байт<br/><br/>
+		<b>Выход:</b><br/>
+		AL=4f (иначе - VBE отсутствует)<br/>
+        AH=0 (иначе - VBE отсутствует)<br/>
+        Структура по адресу ES:DI заполнена<br/><br/>
+		<b>Примечание:</b><br/>
+		По умолчанию, VBE должен отдавать старую версию таблицы. Что бы получить новую версию таблицы ( требует наличия VBE 2.0 или выше) необходимо, что бы перед вызовом функции в первом поле структуры (по смещению 00) была записана ASCII строка &quot;VBE2&quot;<br/><br/>
+		Формат таблицы:
+		<table width=100% border=1><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
+			00h</td><td valign="top">4 байта</td><td>ASCII строка &quot;VESA&quot;<br /> если её нет, то VBE не поддерживается.</td></tr><tr><td valign=top>
+			04h</td><td valign="top">2 байта</td><td>Номер версии (В коде BCD). Старший байт - старший номер версии, младший байт - младший номер версии. Если ниже, чем 0100h, то VBE отсутствует</td></tr><tr><td valign=top>
+			06h</td><td valign="top">4 байта</td><td>Указатель на OEM-строку</td></tr><tr><td valign=top>
+			0Ah</td><td valign="top">4 байта</td><td>Возможности контроллера:<br />
+				&ensp;&ensp;&ensp;&ensp; бит 0 : если сброшен, то используется 6 бит на цвет; если установлен, то можно переключится в режим 8 бит на цвет<br />
+				&ensp;&ensp;&ensp;&ensp; бит 1 : контроллер не VGA-совместимый<br />
+				&ensp;&ensp;&ensp;&ensp; бит 2 : при работе с большими блоками информации в RAMDAC следует использовать бит гашения функции 09h<br />
+				&ensp;&ensp;&ensp;&ensp; бит 3 : подеерживается аппаратный стереосигнал (вывод изображения на 3D монитор)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 4 : (если устанеовлен бит 3) используется VESA EVC совместимый стереоконнектор<br />
+				&ensp;&ensp;&ensp;&ensp; прочие биты - в резерве.</td></tr><tr><td valign=top>
+			0Eh</td><td valign="top">4 байта</td><td>Указатель на список видеорежимов<br/>Список режимов представляет из себя массив слов, закачивыающийся значением FFFFh</td></tr><tr><td valign=top>
+			12h</td><td valign="top">2 байта</td><td>Число блоков видеопамяти по 64 КБ в каждом</td></tr><tr><td valign=top>
+			14h</td><td valign="top">2 байта</td><td>Ревизия VBE (VBE2 или выше)</td></tr><tr><td valign=top>
+			16h</td><td valign="top">4 байта</td><td>Указатель на строку названия фирмы-изготовителя. (VBE2 или выше)</td></tr><tr><td valign=top>
+			1Ah</td><td valign="top">4 байта</td><td>Указатель на строку названия изделия (VBE2 или выше)</td></tr><tr><td valign=top>
+			1Eh</td><td valign="top">4 байта</td><td>Указатель на строку версии (VBE2 или выше)</td></tr><tr><td valign=top>
+			22h</td><td valign="top">222 байта</td><td>РЕЗЕРВ</td></tr><tr><td valign=top>
+			100h</td><td valign="top">256 байт</td><td>Область OEM-данных</td></tr>
+		</table><br/>
+		Список видеорежимов может содержать режимы, которые на деле не поддерживаются из-за ограничений монитора или из-за нехватки оперативной или видеопамяти. Используйте <a href="#01">функцию 01h</a> что бы узнать больше о режиме.<br/><br/>
+		Некоторые реализации, не поддерживающие VBE, содержат "заглушку", возвращающую корректную информацию при вызове этой функции. Такая ситуация отличается тем, что список видеорежимов пуст, т.е. содержит только запись FFFFh<br/><br/>
+		Некоторые видеоадаптаеры S3 ошибочно делят видеорежимы на два списка. второй список начинается сразу после первого.<br/><br/>
+		В VBE версии 1.0 структура имела размер 256 байт. В VBE версии 1.1 структура была такой же, как и в версии 1.0, но имела несколько дополнительных зарезервированных байт в конце. Размер стурктуры в VBE 1.1 равен 262 байта.<br/><br/>
+		В RBIL описанны значения, относящиеся к стандарту VBE/AF. Описанные там данные не действительны, т.к. взяты из наброска стандарта, и эта версия никогда не реализовывалась.</td></tr><td valign=top>
+	<a name="01">01h</a></td><td>Получить информацию о видеорежиме</br><br/>
+		<b>Вход:</b><br/>
+		CX - Номер видеорежима<br />
+		ES:DI - Указывает на структуру в 256 байт<br /><br/>
+		<b>Выход:</b><br/>
+		AH и AL согласно <a href=#rule>общему правилу возврата значений значений VBE</a><br />
+        Структура по адресу ES:DI заполнена<br/><br/>
+		<b>Примечание:</b><br/>
+		<table width=100% border=1><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
+			00h</td><td valign="top">2 байта</td><td>Параметры режима<br/>
+				&ensp;&ensp;&ensp;&ensp; бит 1 : режим поддерживается текущей аппаратной конфигурацией
+				&ensp;&ensp;&ensp;&ensp; бит 2 : 
+				</td></tr><tr><td valign=top>
+			02h</td><td valign="top">1 байт</td><td>Аттрибуты окна А</td></tr><tr><td valign=top>
+			03h</td><td valign="top">1 байт</td><td>Аттрибуты окна В</td></tr><tr><td valign=top>
+			04h</td><td valign="top">2 байта</td><td>Наименьшая величина в КБ, на которую можно переместить окно.</td></tr><tr><td valign=top>
+			06h</td><td valign="top">2 байта</td><td>Размер окна в КБ</td></tr><tr><td valign=top>
+			08h</td><td valign="top">2 байта</td><td>Начальный сегмент окна А в RAM</td></tr><tr><td valign=top>
+			0Ah</td><td valign="top">2 байта</td><td>Начальный сегмент окна В в RAM</td></tr><tr><td valign=top>
+			0Ch</td><td valign="top">4 байта</td><td>Указатель на функцию позиционирования окна.</td></tr><tr><td valign=top>
+			10h</td><td valign="top">2 байта</td><td>Количество байт на строку развёртки</td></tr><tr><td valign=top>
+			12h</td><td valign="top">2 байта</td><td>Разрешение экрана по горизонтали.<br />
+				для графических режимов - в пикселах.<br />
+				для текстовых режимов - в знакоместах.<br />
+				<b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
+			14h</td><td valign="top">2 байта</td><td>
+				Разрешение экрана по вертикали.<br />
+				для графических режимов - в пикселах.<br />
+				для текстовых режимов - в знакоместах.<br />
+				<b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
+			16h</td><td valign="top">1 байт</td><td>Ширина знакоместа в пикселах<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
+			17h</td><td valign="top">1 байт</td><td>Высота знакоместа в пикселах<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
+			18h</td><td valign="top">1 байт</td><td>Число плоскостей памяти<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
+			19h</td><td valign="top">1 байт</td><td>Бит на пиксел<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
+			1Ah</td><td valign="top">1 байт</td><td>Количество банков памяти<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
+			1Bh</td><td valign="top">1 байт</td><td>
 Модель памяти<br />
     <table border=1 width=100%><tr><td>значение</td><td>смысл</td></tr><tr><td valign=top>
     0</td><td>текстовый режим</td></tr><tr><td valign=top>
