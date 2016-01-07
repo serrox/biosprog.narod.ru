@@ -71,7 +71,7 @@
 		Список видеорежимов может содержать режимы, которые на деле не поддерживаются из-за ограничений монитора или из-за нехватки оперативной или видеопамяти. Используйте <a href="#01">функцию 01h</a> что бы узнать больше о режиме.<br/><br/>
 		Некоторые реализации, не поддерживающие VBE, содержат "заглушку", возвращающую корректную информацию при вызове этой функции. Такая ситуация отличается тем, что список видеорежимов пуст, т.е. содержит только запись FFFFh<br/><br/>
 		Некоторые видеоадаптаеры S3 ошибочно делят видеорежимы на два списка. второй список начинается сразу после первого.<br/><br/>
-		В VBE версии 1.0 структура имела размер 256 байт. В VBE версии 1.1 структура была такой же, как и в версии 1.0, но имела несколько дополнительных зарезервированных байт в конце. Размер стурктуры в VBE 1.1 равен 262 байта.<br/><br/>
+		В VBE версии 1.0 структура имела размер 256 байт. В VBE версии 1.1 структура была такой же, как и в версии 1.0, но имела несколько дополнительных зарезервированных байт в конце, и таким образом размер стурктуры в VBE 1.1 равен 262 байта. Однако в VBE 1.2 размер вновь стал 256, так что видимо в версии 1.1 была ошибка.<br/><br/>
 		В RBIL описанны значения, относящиеся к стандарту VBE/AF. Описанные там данные не действительны, т.к. взяты из наброска стандарта, и эта версия никогда не реализовывалась.</td></tr><td valign=top>
 	<a name="01">01h</a></td><td>Получить информацию о видеорежиме</br><br/>
 		<b>Вход:</b><br/>
@@ -83,94 +83,68 @@
 		<b>Примечание:</b><br/>
 		<table width=100% border=1><tr><td>Смещение</td><td>Размер</td><td>Описание</td></tr><tr><td valign=top>
 			00h</td><td valign="top">2 байта</td><td>Параметры режима<br/>
-				&ensp;&ensp;&ensp;&ensp; бит 1 : режим поддерживается текущей аппаратной конфигурацией
-				&ensp;&ensp;&ensp;&ensp; бит 2 : 
-				</td></tr><tr><td valign=top>
-			02h</td><td valign="top">1 байт</td><td>Аттрибуты окна А</td></tr><tr><td valign=top>
-			03h</td><td valign="top">1 байт</td><td>Аттрибуты окна В</td></tr><tr><td valign=top>
+				&ensp;&ensp;&ensp;&ensp; бит 0 : режим поддерживается текущей аппаратной конфигурацией<br />
+				&ensp;&ensp;&ensp;&ensp; бит 1 : доступна дополнительная информация (на VBE 1.2 и выше всегда установлен)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 2 : функции tty-вывода поддерживаются BIOS'ом<br />
+				&ensp;&ensp;&ensp;&ensp; бит 3 : Цветной режим<br />
+				&ensp;&ensp;&ensp;&ensp; бит 4 : Графический режим<br />
+				&ensp;&ensp;&ensp;&ensp; бит 5 : Не VGA-совместимый режим (VBE2 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 6 : Не доступны VGA-совместимые банки памяти (окна) (VBE2 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 7 : Доступен линейный буфер кадра (VBE2 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 8 : Доступен режим двойного сканирования (VBE2 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 9 : Доступен черезстрочный режим (VBE3 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 10 : Поддерживается аппаратная тройная буферизация (VBE3 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 11 : Аппаратная поддержка стереосигнала (вывод изображения на 3D монитор) (VBE3 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; бит 12 : Для компонент стереосигнала используется разный начальный адрес (VBE3 или выше)<br />
+				&ensp;&ensp;&ensp;&ensp; прочие биты - в резерве.</td></tr><tr><td valign=top>
+			02h</td><td valign="top">1 байт</td><td>Аттрибуты окна А:<br/>
+				&ensp;&ensp;&ensp;&ensp; бит 0 : Окно перемещаемо
+				&ensp;&ensp;&ensp;&ensp; бит 1 : Окно доступно для чтения
+				&ensp;&ensp;&ensp;&ensp; бит 2 : Окно доступно для записи<br />
+				&ensp;&ensp;&ensp;&ensp; прочие биты - в резерве.</td></tr><tr><td valign=top>
+			03h</td><td valign="top">1 байт</td><td>Аттрибуты окна В аналогично окну A</td></tr><tr><td valign=top>
 			04h</td><td valign="top">2 байта</td><td>Наименьшая величина в КБ, на которую можно переместить окно.</td></tr><tr><td valign=top>
 			06h</td><td valign="top">2 байта</td><td>Размер окна в КБ</td></tr><tr><td valign=top>
-			08h</td><td valign="top">2 байта</td><td>Начальный сегмент окна А в RAM</td></tr><tr><td valign=top>
-			0Ah</td><td valign="top">2 байта</td><td>Начальный сегмент окна В в RAM</td></tr><tr><td valign=top>
+			08h</td><td valign="top">2 байта</td><td>Начальный сегмент окна А в RAM (0000 - значит окно не поддерживается)</td></tr><tr><td valign=top>
+			0Ah</td><td valign="top">2 байта</td><td>Начальный сегмент окна В в RAM (0000 - значит окно не поддерживается)</td></tr><tr><td valign=top>
 			0Ch</td><td valign="top">4 байта</td><td>Указатель на функцию позиционирования окна.</td></tr><tr><td valign=top>
 			10h</td><td valign="top">2 байта</td><td>Количество байт на строку развёртки</td></tr><tr><td valign=top>
-			12h</td><td valign="top">2 байта</td><td>Разрешение экрана по горизонтали.<br />
+			12h</td><td valign="top">2 байта</td><td>Разрешение экрана по горизонтали.(в VBE 1.0  и 1.1 наличие опционально)<br />
 				для графических режимов - в пикселах.<br />
-				для текстовых режимов - в знакоместах.<br />
-				<b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-			14h</td><td valign="top">2 байта</td><td>
-				Разрешение экрана по вертикали.<br />
+				для текстовых режимов - в знакоместах.</td></tr><tr><td valign=top>
+			14h</td><td valign="top">2 байта</td><td>Разрешение экрана по вертикали.(в VBE 1.0  и 1.1 наличие опционально)<br />
 				для графических режимов - в пикселах.<br />
-				для текстовых режимов - в знакоместах.<br />
-				<b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-			16h</td><td valign="top">1 байт</td><td>Ширина знакоместа в пикселах<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-			17h</td><td valign="top">1 байт</td><td>Высота знакоместа в пикселах<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-			18h</td><td valign="top">1 байт</td><td>Число плоскостей памяти<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-			19h</td><td valign="top">1 байт</td><td>Бит на пиксел<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-			1Ah</td><td valign="top">1 байт</td><td>Количество банков памяти<br /><b><font color=red>VBE 1.2 или выше</font></b></td></tr><tr><td valign=top>
-			1Bh</td><td valign="top">1 байт</td><td>
-Модель памяти<br />
-    <table border=1 width=100%><tr><td>значение</td><td>смысл</td></tr><tr><td valign=top>
-    0</td><td>текстовый режим</td></tr><tr><td valign=top>
-    1</td><td>графический режим, тип CGA</td></tr><tr><td valign=top>
-    2</td><td>графический режим, тип HERCULES</td></tr><tr><td valign=top>
-    3</td><td>планарный режим</td></tr><tr><td valign=top>
-    4</td><td>режим упакованных пикселей</td></tr><tr><td valign=top>
-    5</td><td>нецепочечный режим<span lang="ru"> </span>4, 256 цветов</td></tr><tr><td valign=top>
-    6</td><td>режим DirectColor (HiColor или TrueColor)</td></tr><tr><td valign=top>
-    7</td><td>режим YUV</td></tr><tr><td valign=top>
-    8-0Fh</td><td>РЕЗЕРВ</td></tr><tr><td valign=top>
-    10-FFh</td><td>режимы OEM</td></tr>
-    </table>
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-1Ch</td><td valign="top">1 байт</td><td>
-КБ в одном банке памяти<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-1Dh</td><td valign="top">1 байт</td><td>
-Число видеостраниц, помещающихся в памяти минус одна страница<br />
-<b><font color=red>VBE 1.2 или выше</font></b>
-</td></tr><tr><td valign=top>
-1Eh</td><td valign="top">1 байт</td><td>
-=1<br />(резерв)
-</td></tr><tr><td valign=top>
-1Fh</td><td valign="top">1 байт</td><td>
-Размер компоненты красного цвета (в битах)<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-20h</td><td valign="top">1 байт</td><td>
-Начальная битовая позиция компоненты красного цвета.<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-21h</td><td valign="top">1 байт</td><td>
-Размер компоненты зелёного цвета (в битах)<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-22h</td><td valign="top">1 байт</td><td>
-Начальная битовая позиция компоненты зелёного цвета.<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-23h</td><td valign="top">1 байт</td><td>
-Размер компоненты синего цвета (в битах)<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-24h</td><td valign="top">1 байт</td><td>
-Начальная битовая позиция компоненты синего цвета.<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-25h</td><td valign="top">1 байт</td><td>
-Размер резервной компоненты (в битах)<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-26h</td><td valign="top">1 байт</td><td>
-Начальная битовая позиция резервной компоненты.<br />
-<b><font color=red>только для моделей памяти DirectColor и YUV</font></b>
-</td></tr><tr><td valign=top>
-27h</td><td valign="top">1 байт</td><td>
-Аттрибуты режима DirectColor.<br />
-<b><font color=red>только для модели памяти DirectColor</font></b>
-</td></tr><tr><td valign=top>
+				для текстовых режимов - в знакоместах.</b></td></tr><tr><td valign=top>
+			16h</td><td valign="top">1 байт</td><td>Ширина знакоместа в пикселах(в VBE 1.0  и 1.1 наличие опционально)</td></tr><tr><td valign=top>
+			17h</td><td valign="top">1 байт</td><td>Высота знакоместа в пикселах(в VBE 1.0  и 1.1 наличие опционально)</td></tr><tr><td valign=top>
+			18h</td><td valign="top">1 байт</td><td>Число плоскостей памяти(в VBE 1.0  и 1.1 наличие опционально)</td></tr><tr><td valign=top>
+			19h</td><td valign="top">1 байт</td><td>Бит на пиксел(в VBE 1.0  и 1.1 наличие опционально)</td></tr><tr><td valign=top>
+			1Ah</td><td valign="top">1 байт</td><td>Количество банков памяти(в VBE 1.0  и 1.1 наличие опционально)</td></tr><tr><td valign=top>
+			1Bh</td><td valign="top">1 байт</td><td>Модель памяти(в VBE 1.0  и 1.1 наличие опционально)<br />
+				<table border=1 width=100%><tr><td>значение</td><td>смысл</td></tr><tr><td valign=top>
+					0</td><td>текстовый режим</td></tr><tr><td valign=top>
+					1</td><td>графический режим, тип CGA</td></tr><tr><td valign=top>
+					2</td><td>графический режим, тип HERCULES (HGC)</td></tr><tr><td valign=top>
+					3</td><td>планарный режим (как 16-ти цветный EGA)</td></tr><tr><td valign=top>
+					4</td><td>режим упакованных пикселей</td></tr><tr><td valign=top>
+					5</td><td>нецепочечный режим 4, 256 цветов (sequ 256)</td></tr><tr><td valign=top>
+					6</td><td>режим DirectColor (HiColor или TrueColor)</td></tr><tr><td valign=top>
+					7</td><td>режим YUV</td></tr><tr><td valign=top>
+					8-0Fh</td><td>РЕЗЕРВ</td></tr><tr><td valign=top>
+					10-FFh</td><td>режимы OEM</td></tr>
+				</table></td></tr><tr><td valign=top>
+			1Ch</td><td valign="top">1 байт</td><td>КБ в одном банке памяти(в VBE 1.0  и 1.1 наличие опционально)</td></tr><tr><td valign=top>
+			1Dh</td><td valign="top">1 байт</td><td>Число видеостраниц, помещающихся в памяти минус одна страница(в VBE 1.0  и 1.1 наличие опционально)</td></tr><tr><td valign=top>
+			1Eh</td><td valign="top">1 байт</td><td>В VBE 1.x и 2.0 раен нулю, в VBE 3.0 равен единице</td></tr><tr><td valign=top>
+			1Fh</td><td valign="top">1 байт</td><td>Размер компоненты красного цвета (в битах) (для YUV - V) (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			20h</td><td valign="top">1 байт</td><td>Начальная битовая позиция компоненты красного цвета. (для YUV - V) (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			21h</td><td valign="top">1 байт</td><td>Размер компоненты зелёного цвета (в битах) (для YUV - Y)  (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			22h</td><td valign="top">1 байт</td><td>Начальная битовая позиция компоненты зелёного цвета. (для YUV - Y)  (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			23h</td><td valign="top">1 байт</td><td>Размер компоненты синего цвета (в битах) (для YUV - U)  (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			24h</td><td valign="top">1 байт</td><td>Начальная битовая позиция компоненты синего цвета. (для YUV - Y)  (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			25h</td><td valign="top">1 байт</td><td>Размер зарезервированной компоненты (в битах) (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			26h</td><td valign="top">1 байт</td><td>Начальная битовая позиция зарезервированной компоненты. (VBE 1.2 или выше)</td></tr><tr><td valign=top>
+			27h</td><td valign="top">1 байт</td><td>Аттрибуты режима DirectColor. (VBE 1.2 или выше)</td></tr><tr><td valign=top>
 28h</td><td valign="top">4 байта</td><td>
 Абсолютный, 32-х разрядный адрес буфера кадра<br />
 <b><font color=red>VBE2 или выше</font></b>
